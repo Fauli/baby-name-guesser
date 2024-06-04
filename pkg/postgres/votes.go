@@ -25,6 +25,28 @@ func (c *PostgresClient) GetVotesForNames() (map[string]int, error) {
 
 }
 
+// get all votes returns a list of all emails and votes.
+func (c *PostgresClient) GetAllVotesPerMail() (map[string][]string, error) {
+	rows, err := c.db.Query("SELECT voter_fk, names_fk FROM votes")
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	votes := make(map[string][]string)
+	for rows.Next() {
+		var email string
+		var name string
+		err := rows.Scan(&email, &name)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		votes[email] = append(votes[email], name)
+	}
+
+	return votes, nil
+}
+
 // AddVotes adds a vote for a list of name.
 func (c *PostgresClient) AddVote(email string, name string) error {
 

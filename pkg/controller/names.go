@@ -57,7 +57,13 @@ func (c *Controller) AddBabyNames(ctx *gin.Context) {
 		fmt.Println(err)
 	}
 
-	n.AddNames(names)
+	names, err := n.AddNames(names)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"names": names,

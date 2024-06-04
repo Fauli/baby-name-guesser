@@ -1,6 +1,10 @@
 package votes
 
-import "sbebe.ch/baby-name-guesser/pkg/postgres"
+import (
+	"fmt"
+
+	"sbebe.ch/baby-name-guesser/pkg/postgres"
+)
 
 type Vote struct {
 	Email string   `json:"email"`
@@ -27,4 +31,24 @@ func GetVotes() (map[string]int, error) {
 		return nil, err
 	}
 	return c.GetVotesForNames()
+}
+
+func GetVotesForVoters() ([]Vote, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return nil, err
+	}
+	voteMap, err := c.GetAllVotesPerMail()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]Vote, 0)
+	for mail, votes := range voteMap {
+		fmt.Printf("Mail: %s, Votes: %v\n", mail, votes)
+		result = append(result, Vote{Email: mail, Names: votes})
+	}
+
+	return result, nil
+
 }

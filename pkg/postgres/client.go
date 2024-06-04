@@ -22,10 +22,5 @@ func NewPostgresClient() (*PostgresClient, error) {
 		return nil, fmt.Errorf("failed to connect to the database: %v", err)
 	}
 
-	// err = db.Ping()
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to ping the database: %v", err)
-	// }
-
 	return &PostgresClient{db: db}, nil
 }

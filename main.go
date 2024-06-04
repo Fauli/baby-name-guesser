@@ -35,6 +35,7 @@ func main() {
 
 	votesGroup.POST("", c.AddVotes)
 	votesGroup.GET("", c.GetAllVotes)
+	votesGroup.GET("/voters", c.GetVotesPerVoters)
 
 	// Serve the Swagger documentation
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

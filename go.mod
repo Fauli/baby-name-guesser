@@ -3,6 +3,7 @@ module sbebe.ch/baby-name-guesser
 go 1.21.1
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/lib/pq v1.10.9
 	github.com/swaggo/files v1.0.1
