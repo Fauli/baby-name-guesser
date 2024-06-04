@@ -1,0 +1,350 @@
+definitions:
+  controller.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  controller.Message:
+    properties:
+      message:
+        example: message
+        type: string
+    type: object
+  voters.Voter:
+    properties:
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+    type: object
+  voters.VoterFull:
+    properties:
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  voters.VoterLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  votes.Vote:
+    properties:
+      email:
+        type: string
+      names:
+        items:
+          type: string
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /names:
+    get:
+      consumes:
+      - application/json
+      description: Return all of the stored names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Show all names
+      tags:
+      - names
+    post:
+      consumes:
+      - application/json
+      description: Add a list of new baby names to the store
+      parameters:
+      - description: names
+        in: body
+        name: names
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Add a list of new baby names
+      tags:
+      - names
+  /names/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific baby name from the store
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Delete a baby name
+      tags:
+      - names
+  /voters:
+    post:
+      consumes:
+      - application/json
+      description: Add a single new voter, used to register to the voting system
+      parameters:
+      - description: names
+        in: body
+        name: voter
+        required: true
+        schema:
+          $ref: '#/definitions/voters.VoterFull'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/voters.Voter'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Add a single new voter
+      tags:
+      - voter
+  /voters/{email}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a single voter by email
+      parameters:
+      - description: Email of the voter
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Delete a single voter by email
+      tags:
+      - voter
+    get:
+      consumes:
+      - application/json
+      description: Get a single voter by email
+      parameters:
+      - description: Email of the voter
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/voters.Voter'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get a single voter by email
+      tags:
+      - voter
+  /voters/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a voter
+      parameters:
+      - description: names
+        in: body
+        name: voter
+        required: true
+        schema:
+          $ref: '#/definitions/voters.VoterLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Login a voter
+      tags:
+      - voter
+  /votes:
+    get:
+      consumes:
+      - application/json
+      description: Get all votes for the names aggregated
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get all votes for the names
+      tags:
+      - voting
+    post:
+      consumes:
+      - application/json
+      description: Add a single new voter, used to register to the voting system
+      parameters:
+      - description: vote
+        in: body
+        name: vote
+        required: true
+        schema:
+          $ref: '#/definitions/votes.Vote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/votes.Vote'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Add a single new voter
+      tags:
+      - voting
+swagger: "2.0"
