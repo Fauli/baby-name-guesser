@@ -24,3 +24,8 @@ func NewPostgresClient() (*PostgresClient, error) {
 
 	return &PostgresClient{db: db}, nil
 }
+
+// Close closes the connection to the database.
+func (c *PostgresClient) Close() error {
+	return c.db.Close()
+}

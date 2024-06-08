@@ -27,14 +27,17 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 	var voter v.VoterFull
 
 	if err := ctx.BindJSON(&voter); err != nil {
-		// DO SOMETHING WITH THE ERROR
-		fmt.Println(err)
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
 	}
 
 	result, err := v.AddVoter(voter)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -59,8 +62,9 @@ func (c *Controller) GetVoter(ctx *gin.Context) {
 	email := ctx.Param("email")
 	voter, err := v.GetVoterByEmail(email)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"error": "Voter not found",
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -84,8 +88,9 @@ func (c *Controller) DeleteVoter(ctx *gin.Context) {
 	email := ctx.Param("email")
 	err := v.DeleteVoterByEmail(email)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"error": "Voter not found",
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -110,16 +115,32 @@ func (c *Controller) DeleteVoter(ctx *gin.Context) {
 func (c *Controller) LoginVoter(ctx *gin.Context) {
 	var voter v.VoterLogin
 	if err := ctx.BindJSON(&voter); err != nil {
-		// DO SOMETHING WITH THE ERROR
-		fmt.Println(err)
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
 	}
 	result, err := v.LoginVoter(voter.Email, voter.Password)
 	if err != nil || !result {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"error": "Login failed",
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "Logon failed",
 		})
 		return
 	}
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	session.Values["authenticated"] = true
+	session.Values["email"] = voter.Email
+	session.Save(ctx.Request, ctx.Writer)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Voter logged in successfully",

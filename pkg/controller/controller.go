@@ -1,12 +1,17 @@
 package controller
 
+import "github.com/gorilla/sessions"
+
 // Controller example
 type Controller struct {
+	Store *sessions.CookieStore
 }
 
 // NewController example
-func NewController() *Controller {
-	return &Controller{}
+func NewController(store *sessions.CookieStore) *Controller {
+	return &Controller{
+		Store: store,
+	}
 }
 
 // Message example

@@ -27,14 +27,17 @@ func (c *Controller) AddVotes(ctx *gin.Context) {
 	var voter v.Vote
 
 	if err := ctx.BindJSON(&voter); err != nil {
-		// DO SOMETHING WITH THE ERROR
-		fmt.Println(err)
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
 	}
 
 	result, err := v.AddVotes(voter)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -58,8 +61,9 @@ func (c *Controller) GetAllVotes(ctx *gin.Context) {
 
 	result, err := v.GetVotes()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -83,8 +87,9 @@ func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
 
 	result, err := v.GetVotesForVoters()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}

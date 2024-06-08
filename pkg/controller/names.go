@@ -23,8 +23,9 @@ import (
 func (c *Controller) GetAllBabyNames(ctx *gin.Context) {
 	names, err := n.GetNames()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -53,14 +54,18 @@ func (c *Controller) AddBabyNames(ctx *gin.Context) {
 	var names []string
 
 	if err := ctx.BindJSON(&names); err != nil {
-		// DO SOMETHING WITH THE ERROR
-		fmt.Println(err)
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
 	}
 
 	names, err := n.AddNames(names)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}
@@ -88,8 +93,9 @@ func (c *Controller) DeleteBabyName(ctx *gin.Context) {
 	fmt.Printf("Deleting name: %v\n", name)
 	err := n.DeleteName(name)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		})
 		return
 	}

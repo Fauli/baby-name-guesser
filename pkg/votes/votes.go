@@ -16,6 +16,7 @@ func AddVotes(vote Vote) (Vote, error) {
 	if err != nil {
 		return Vote{}, err
 	}
+	defer c.Close()
 	err = c.AddVotes(vote.Email, vote.Names)
 	if err != nil {
 		return Vote{}, err
@@ -30,6 +31,7 @@ func GetVotes() (map[string]int, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.Close()
 	return c.GetVotesForNames()
 }
 
@@ -38,6 +40,7 @@ func GetVotesForVoters() ([]Vote, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.Close()
 	voteMap, err := c.GetAllVotesPerMail()
 	if err != nil {
 		return nil, err

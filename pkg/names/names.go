@@ -12,6 +12,7 @@ func GetNames() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.Close()
 	return c.GetAllBabyNames()
 }
 
@@ -22,6 +23,7 @@ func AddNames(names []string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.Close()
 	err = c.AddBabyNames(names)
 	if err != nil {
 		return nil, err
@@ -36,6 +38,7 @@ func DeleteName(name string) error {
 	if err != nil {
 		return err
 	}
+	defer c.Close()
 	err = c.DeleteBabyName(name)
 	if err != nil {
 		return err

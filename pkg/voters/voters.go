@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 type Voter struct {
@@ -23,11 +24,26 @@ type VoterLogin struct {
 }
 
 func AddVoter(voter VoterFull) (Voter, error) {
-	fmt.Println("adding names")
+
+	// Validate the input
+	if voter.Name == "" || voter.LastName == "" || voter.Email == "" || voter.Password == "" {
+		return Voter{}, fmt.Errorf("missing fields")
+	}
+
+	if len(voter.Password) < 8 {
+		return Voter{}, fmt.Errorf("password too short")
+	}
+
+	if !utils.IsMailValid(voter.Email) {
+		return Voter{}, fmt.Errorf("invalid email")
+	}
+
+	fmt.Printf("Adding new voter: %s %s [%s]\n", voter.Name, voter.LastName, voter.Email)
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return Voter{}, err
 	}
+	defer c.Close()
 	err = c.AddVoter(voter.Name, voter.LastName, voter.Email, voter.Password)
 	if err != nil {
 		return Voter{}, err
@@ -42,6 +58,7 @@ func DeleteVoterByEmail(email string) error {
 	if err != nil {
 		return err
 	}
+	defer c.Close()
 	err = c.DeleteVoter(email)
 	return err
 }
@@ -51,6 +68,7 @@ func GetVoterByEmail(email string) (Voter, error) {
 	if err != nil {
 		return Voter{}, err
 	}
+	defer c.Close()
 	name, lastName, err := c.GetNameAndLastname(email)
 	if err != nil {
 		return Voter{}, err
@@ -63,6 +81,7 @@ func LoginVoter(email, password string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	defer c.Close()
 	result, err := c.LoginVoter(email, password)
 	return result, err
 }

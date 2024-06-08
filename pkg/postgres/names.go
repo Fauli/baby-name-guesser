@@ -7,7 +7,7 @@ import (
 )
 
 func (c *PostgresClient) GetAllBabyNames() ([]string, error) {
-	rows, err := c.db.Query("SELECT name FROM names")
+	rows, err := c.db.Query("SELECT name FROM names ORDER BY name ASC")
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute query: %v", err)
 	}
