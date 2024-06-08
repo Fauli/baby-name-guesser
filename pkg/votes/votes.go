@@ -6,24 +6,28 @@ import (
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
 )
 
+const (
+	topVotes = 3
+)
+
 type Vote struct {
 	Email string   `json:"email"`
 	Names []string `json:"names"`
 }
 
-func AddVotes(vote Vote) (Vote, error) {
+func AddVotes(voter string, votes []string) (Vote, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return Vote{}, err
 	}
 	defer c.Close()
-	err = c.AddVotes(vote.Email, vote.Names)
+	err = c.AddVotes(voter, votes)
 	if err != nil {
 		return Vote{}, err
 
 	}
 
-	return Vote{Email: vote.Email, Names: vote.Names}, nil
+	return Vote{Email: voter, Names: votes}, nil
 }
 
 func GetVotes() (map[string]int, error) {
@@ -54,4 +58,13 @@ func GetVotesForVoters() ([]Vote, error) {
 
 	return result, nil
 
+}
+
+func GetTopVotes() (map[string]int, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+	return c.GetTopVotes(topVotes)
 }

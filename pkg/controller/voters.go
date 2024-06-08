@@ -138,11 +138,55 @@ func (c *Controller) LoginVoter(ctx *gin.Context) {
 		return
 	}
 
+	name, lastName, err := v.GetNameAndLastname(voter.Email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
 	session.Values["authenticated"] = true
 	session.Values["email"] = voter.Email
+	session.Values["name"] = name
+	session.Values["last_name"] = lastName
 	session.Save(ctx.Request, ctx.Writer)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Voter logged in successfully",
+	})
+}
+
+// LogoutVoter godoc
+//
+//	@Summary		LogoutVoter a voter
+//	@Description	LogoutVoter a voter
+//	@Tags			voter
+//	@Accept			json
+//	@Produce		json
+//	@Success		200					{string}	Message
+//	@Failure		400					{object}	HTTPError
+//	@Failure		404					{object}	HTTPError
+//	@Failure		500					{object}	HTTPError
+//	@Router			/voters/logout [post]
+func (c *Controller) LogoutVoter(ctx *gin.Context) {
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	user := session.Values["email"]
+	fmt.Printf("Logging out user %s\n", user)
+
+	session.Values["authenticated"] = false
+	session.Values["email"] = ""
+	session.Save(ctx.Request, ctx.Writer)
+
+	ctx.JSON(http.StatusOK, Message{
+		Message: "Voter logged out successfully",
 	})
 }

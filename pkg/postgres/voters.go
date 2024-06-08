@@ -53,6 +53,7 @@ func (c *PostgresClient) LoginVoter(email, passwort string) (bool, error) {
 	return true, nil
 }
 
+// GetNameAndLastname returns the name and last name of a voter by email
 func (c *PostgresClient) GetNameAndLastname(email string) (string, string, error) {
 	fmt.Printf("Getting voter details by email: %v\n", email)
 	rows, err := c.db.Query("SELECT name, last_name FROM voters WHERE email = $1", email)

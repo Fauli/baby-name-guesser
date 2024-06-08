@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	swaggerfiles "github.com/swaggo/files"
@@ -61,26 +59,16 @@ func main() {
 	votersGroup.POST("/login", c.LoginVoter)
 	votersGroup.GET("/:email", c.GetVoter)
 	votersGroup.DELETE("/:email", c.DeleteVoter)
+	votersGroup.POST("/logout", c.LogoutVoter)
 
 	votesGroup.GET("", c.GetAllVotes)
 	votesGroup.POST("", c.AddVotes)
 	votesGroup.GET("/voters", c.GetVotesPerVoters)
+	votesGroup.GET("/top", c.GetTopVotes)
 
 	// Serve the Swagger documentation
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// Start the server
 	router.Run(":8080")
-}
-
-func LogoutUser(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "tandaradei-session")
-
-	// Revoke users authentication
-	session.Values["authenticated"] = false
-	session.Values["email"] = nil
-	session.Save(r, w)
-
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-
 }

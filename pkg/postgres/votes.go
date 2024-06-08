@@ -71,3 +71,36 @@ func (c *PostgresClient) AddVotes(email string, names []string) error {
 
 	return nil
 }
+
+// DeleteVote deletes a vote from the list.
+func (c *PostgresClient) DeleteVote(email string, name string) error {
+	fmt.Printf("Deleting vote from DB: %v\n", name)
+	_, err := c.db.Exec("DELETE FROM votes WHERE names_fk = $1 AND voter_fk = $2", name, email)
+	if err != nil {
+		return fmt.Errorf("failed to execute query: %v", err)
+	}
+
+	return nil
+}
+
+// GetTopVotes returns the top 10 names with the most votes.
+func (c *PostgresClient) GetTopVotes(limit int) (map[string]int, error) {
+	rows, err := c.db.Query("SELECT names.name, COUNT(votes.names_fk) FROM names LEFT JOIN votes ON names.name = votes.names_fk GROUP BY names.name ORDER BY COUNT(votes.names_fk) DESC LIMIT $1", limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	votes := make(map[string]int)
+	for rows.Next() {
+		var name string
+		var count int
+		err := rows.Scan(&name, &count)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		votes[name] = count
+	}
+
+	return votes, nil
+}

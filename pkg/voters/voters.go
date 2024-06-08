@@ -85,3 +85,13 @@ func LoginVoter(email, password string) (bool, error) {
 	result, err := c.LoginVoter(email, password)
 	return result, err
 }
+
+func GetNameAndLastname(email string) (string, string, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return "", "", err
+	}
+	defer c.Close()
+	name, lastName, err := c.GetNameAndLastname(email)
+	return name, lastName, err
+}

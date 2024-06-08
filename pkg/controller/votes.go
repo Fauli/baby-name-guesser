@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 	v "sbebe.ch/baby-name-guesser/pkg/votes"
 )
 
@@ -15,7 +16,7 @@ import (
 //	@Tags			voting
 //	@Accept			json
 //	@Produce		json
-//	@Param			vote	body	v.Vote	true	"vote"
+//	@Param			vote	body	[]string	true	"vote"
 //	@Success		200					{object}	v.Vote
 //	@Failure		400					{object}	HTTPError
 //	@Failure		404					{object}	HTTPError
@@ -24,16 +25,27 @@ import (
 func (c *Controller) AddVotes(ctx *gin.Context) {
 
 	fmt.Println("Adding a new vote")
-	var voter v.Vote
+	var votes []string
 
-	if err := ctx.BindJSON(&voter); err != nil {
+	if err := ctx.BindJSON(&votes); err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
 			Message: err.Error(),
 		})
 	}
 
-	result, err := v.AddVotes(voter)
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	email := session.Values["email"]
+	fmt.Printf("Adding votes for %s\n", email)
+	result, err := v.AddVotes(session.Values["email"].(string), votes)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
@@ -85,7 +97,52 @@ func (c *Controller) GetAllVotes(ctx *gin.Context) {
 //	@Router			/votes/voters [get]
 func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can view all votes
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	result, err := v.GetVotesForVoters()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result)
+}
+
+// GetTopVotes godoc
+//
+//	@Summary		Get the top votes
+//	@Description	Get the top votes for the names
+//	@Tags			voting
+//	@Accept			json
+//	@Produce		json
+//	@Success		200					{object}	map[string]int
+//	@Failure		400					{object}	HTTPError
+//	@Failure		404					{object}	HTTPError
+//	@Failure		500					{object}	HTTPError
+//	@Router			/votes/top [get]
+func (c *Controller) GetTopVotes(ctx *gin.Context) {
+
+	result, err := v.GetTopVotes()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,

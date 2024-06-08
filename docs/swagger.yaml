@@ -285,6 +285,33 @@ paths:
       summary: Login a voter
       tags:
       - voter
+  /voters/logout:
+    post:
+      consumes:
+      - application/json
+      description: LogoutVoter a voter
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: LogoutVoter a voter
+      tags:
+      - voter
   /votes:
     get:
       consumes:
@@ -324,7 +351,9 @@ paths:
         name: vote
         required: true
         schema:
-          $ref: '#/definitions/votes.Vote'
+          items:
+            type: string
+          type: array
       produces:
       - application/json
       responses:
@@ -345,6 +374,35 @@ paths:
           schema:
             $ref: '#/definitions/controller.HTTPError'
       summary: Add a single new voter
+      tags:
+      - voting
+  /votes/top:
+    get:
+      consumes:
+      - application/json
+      description: Get the top votes for the names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get the top votes
       tags:
       - voting
   /votes/voters:

@@ -21,7 +21,9 @@ func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 				c.Abort()
 			} else {
 				user := session.Values["email"]
-				fmt.Printf("Session is valid by user: %s\n", user)
+				name := session.Values["name"]
+				lastName := session.Values["last_name"]
+				fmt.Printf("Session is valid by user: %s %s [%s]\n", name, lastName, user)
 				c.Next()
 			}
 		}
