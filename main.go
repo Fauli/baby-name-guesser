@@ -59,6 +59,7 @@ func main() {
 	nameGroup := apiGroup.Group("/names")
 	votersGroup := apiGroup.Group("/voters")
 	votesGroup := apiGroup.Group("/votes")
+	paymentsGroup := apiGroup.Group("/payments")
 
 	c := controller.NewController(store)
 
@@ -78,11 +79,11 @@ func main() {
 	votesGroup.GET("/voters", c.GetVotesPerVoters)
 	votesGroup.GET("/top", c.GetTopVotes)
 
-	apiGroup.GET("/me", c.GetUserInformation)
-	apiGroup.GET("/payments", c.GetPayment)
-	apiGroup.POST("/payments/:email", c.PayForVotes)
-	apiGroup.GET("/payments/:email", c.HasUserPaid)
+	paymentsGroup.GET("", c.GetPayment)
+	paymentsGroup.POST("/:email", c.PayForVotes)
+	paymentsGroup.GET("/:email", c.HasUserPaid)
 
+	apiGroup.GET("/me", c.GetUserInformation)
 	// Serve the Swagger documentation
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
