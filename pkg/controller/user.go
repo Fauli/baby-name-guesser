@@ -1,0 +1,44 @@
+package controller
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	v "sbebe.ch/baby-name-guesser/pkg/voters"
+)
+
+// GetAllBabyNames godoc
+//
+//	@Summary		Get current logged in user information
+//	@Description	Get current logged in user information
+//	@Tags			user
+//	@Accept			json
+//	@Produce		json
+//	@Success		200					{object}	[]string
+//	@Failure		400					{object}	HTTPError
+//	@Failure		404					{object}	HTTPError
+//	@Failure		500					{object}	HTTPError
+//	@Router			/me [get]
+func (c *Controller) GetUserInformation(ctx *gin.Context) {
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	email := session.Values["email"].(string)
+
+	voter, err := v.GetVoterByEmail(email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, voter)
+}

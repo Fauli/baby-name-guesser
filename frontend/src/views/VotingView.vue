@@ -26,14 +26,14 @@ function handleNameSelection(name: string) {
 
 function submitVote() {
   console.log('Submitting vote for', selectedNames.value)
+  var values = selectedNames.value
   fetch('http://localhost:8080/api/votes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email: 'f@sbebe.ch',
-      names: selectedNames.value
+      names: values
     })
   })
   .then(response => response.json())

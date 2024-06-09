@@ -14,6 +14,13 @@ definitions:
         example: message
         type: string
     type: object
+  names.Names:
+    properties:
+      names:
+        items:
+          type: string
+        type: array
+    type: object
   voters.Voter:
     properties:
       email:
@@ -26,6 +33,8 @@ definitions:
   voters.VoterFull:
     properties:
       email:
+        type: string
+      event_password:
         type: string
       last_name:
         type: string
@@ -53,6 +62,35 @@ definitions:
 info:
   contact: {}
 paths:
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Get current logged in user information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get current logged in user information
+      tags:
+      - user
   /names:
     get:
       consumes:
@@ -351,9 +389,7 @@ paths:
         name: vote
         required: true
         schema:
-          items:
-            type: string
-          type: array
+          $ref: '#/definitions/names.Names'
       produces:
       - application/json
       responses:

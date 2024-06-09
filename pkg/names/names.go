@@ -6,6 +6,10 @@ import (
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
 )
 
+type Names struct {
+	Names []string `json:"names"`
+}
+
 // GetNames returns a list of names.
 func GetNames() ([]string, error) {
 	c, err := postgres.NewPostgresClient()

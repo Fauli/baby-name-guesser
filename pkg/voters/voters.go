@@ -15,7 +15,8 @@ type Voter struct {
 
 type VoterFull struct {
 	Voter
-	Password string `json:"password"`
+	Password      string `json:"password"`
+	EventPassword string `json:"event_password"`
 }
 
 type VoterLogin struct {
@@ -38,6 +39,11 @@ func AddVoter(voter VoterFull) (Voter, error) {
 		return Voter{}, fmt.Errorf("invalid email")
 	}
 
+	if voter.EventPassword != utils.GetEventPassword() {
+		return Voter{}, fmt.Errorf("invalid event password")
+	}
+
+	// Add the voter
 	fmt.Printf("Adding new voter: %s %s [%s]\n", voter.Name, voter.LastName, voter.Email)
 	c, err := postgres.NewPostgresClient()
 	if err != nil {

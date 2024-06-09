@@ -17,6 +17,7 @@ const name = ref('')
 const lastname = ref('')
 const email = ref('')
 const password = ref('')
+const event_password = ref('')
 
 var registrationStatus = ref('')
 
@@ -29,7 +30,8 @@ const register = async () => {
     name: name.value,
     last_name: lastname.value,
     email: email.value,
-    password: password.value
+    password: password.value,
+    event_password: event_password.value
   }
 
   try {
@@ -67,6 +69,8 @@ const register = async () => {
   <div v-else>
     <h1>Register for the name game!</h1>
     <p>You need the special password in order to register, ask Franz or Kathrin for it :).</p>
+    <br />
+    <br />
 
     <div v-if="registrationStatus === 'success' || registrationStatus === 'failure'">
     <div class="important">
@@ -81,17 +85,20 @@ const register = async () => {
   </div>
 
     <form>
-      <label for="name">Name:</label>
+      <label for="name">Your Name:</label>
       <input type="text" id="name" v-model="name" required>
       
-      <label for="lastname">Lastname:</label>
+      <label for="lastname">Your Lastname:</label>
       <input type="text" id="lastname" v-model="lastname" required>
       
-      <label for="email">Email:</label>
+      <label for="email">Your Email (will also be your username):</label>
       <input type="email" id="email" v-model="email" required>
       
-      <label for="password">Password:</label>
+      <label for="password">Your Password:</label>
       <input type="password" id="password" v-model="password" required>
+
+      <label for="password">Event Password:</label>
+      <input type="text" id="event_password" v-model="event_password" required>
       
       <button @click="register">Register</button>
     </form>
@@ -189,6 +196,5 @@ button {
 button:hover {
   background-color: #3da566;
 }
-
 
 </style>

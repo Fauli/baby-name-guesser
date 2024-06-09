@@ -10,6 +10,12 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  build: {
+    // assetsDir: '',
+    // outDir: '../static'
+    
+  },
+  base: '/ui/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

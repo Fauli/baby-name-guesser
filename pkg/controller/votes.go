@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	n "sbebe.ch/baby-name-guesser/pkg/names"
 	"sbebe.ch/baby-name-guesser/pkg/utils"
 	v "sbebe.ch/baby-name-guesser/pkg/votes"
 )
@@ -16,7 +17,7 @@ import (
 //	@Tags			voting
 //	@Accept			json
 //	@Produce		json
-//	@Param			vote	body	[]string	true	"vote"
+//	@Param			vote	body	n.Names	true	"vote"
 //	@Success		200					{object}	v.Vote
 //	@Failure		400					{object}	HTTPError
 //	@Failure		404					{object}	HTTPError
@@ -25,9 +26,9 @@ import (
 func (c *Controller) AddVotes(ctx *gin.Context) {
 
 	fmt.Println("Adding a new vote")
-	var votes []string
+	var votedNames n.Names
 
-	if err := ctx.BindJSON(&votes); err != nil {
+	if err := ctx.BindJSON(&votedNames); err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
 			Message: err.Error(),
@@ -45,7 +46,7 @@ func (c *Controller) AddVotes(ctx *gin.Context) {
 
 	email := session.Values["email"]
 	fmt.Printf("Adding votes for %s\n", email)
-	result, err := v.AddVotes(session.Values["email"].(string), votes)
+	result, err := v.AddVotes(session.Values["email"].(string), votedNames.Names)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,

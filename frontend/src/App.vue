@@ -2,7 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, watchEffect } from 'vue'
 
-const API_URL = `https://qreator.ch/api`
+const API_URL = `/api`
 
 const userInfo: any = ref(null)
 
@@ -25,8 +25,8 @@ watchEffect(async () => {
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/voting">Vote!</RouterLink>
         <!-- <RouterLink to="/check-in/null">Check-In</RouterLink> -->
-        <span class="navItem" v-if="userInfo">
-          Logged in as {{ userInfo.name }}
+        <span class="navItem" v-if="userInfo.name">
+          Logged in as <b>{{ userInfo.name }} {{ userInfo.last_name }}</b>
         </span>
         <span class="navItem" v-else>
           <RouterLink to="/login">Login</RouterLink>

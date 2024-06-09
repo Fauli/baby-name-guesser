@@ -16,10 +16,10 @@ watchEffect(async () => {
 const email = ref('')
 const password = ref('')
 
-var registrationStatus = ref('')
+var loginStatus = ref('')
 
 watchEffect(() => {
-  registrationStatus.value = ''
+  loginStatus.value = ''
 })
 
 const register = async () => {
@@ -42,11 +42,11 @@ const register = async () => {
     if (response.ok) {
       // Registration successful
       console.log('Login successful')
-      registrationStatus.value = 'success'
+      loginStatus.value = 'success'
     } else {
       // Registration failed
       console.error('Login failed')
-      registrationStatus.value = 'failure'
+      loginStatus.value = 'failure'
     }
   } catch (error) {
     console.error('Error:', error)
@@ -61,28 +61,31 @@ const register = async () => {
     <h1>Loading...</h1>
   </div>
   <div v-else>
-    <h1>Register for the name game!</h1>
-    <p>You need the special password in order to register, ask Franz or Kathrin for it :).</p>
+    <h1>Login for the name game!</h1>
 
-    <div v-if="registrationStatus === 'success' || registrationStatus === 'failure'">
-    <div class="important">
-      <div class="important-content">
-        <p v-if="registrationStatus === 'success'">Registration successful!
-          <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
-</p>
-        <p v-if="registrationStatus === 'failure'">Registration failed!</p>
-        
+    <div v-if="loginStatus === 'success' || loginStatus === 'failure'">
+      <div class="important">
+        <div v-if="loginStatus === 'success'" class="important-content green">
+          <p>Login successful!
+            <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
+          </p>
+        </div>
+        <div v-if="loginStatus === 'failure'" class="important-content red">
+          <p>Login failed!</p>
+        </div>
       </div>
     </div>
   </div>
+  <div>
 
-    <form>      
+
+    <form>
       <label for="email">Email:</label>
       <input type="email" id="email" v-model="email" required>
-      
+
       <label for="password">Password:</label>
       <input type="password" id="password" v-model="password" required>
-      
+
       <button @click="register">Register</button>
     </form>
   </div>
@@ -93,12 +96,27 @@ const register = async () => {
 <style>
 
 .important {
-  background-color: #f8d7da;
-  color: #721c24;
   padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.red {
+  background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 5px;
   margin-bottom: 20px;
+  padding: 10px;
+
+}
+
+.green {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+
 }
 
 .important-content {

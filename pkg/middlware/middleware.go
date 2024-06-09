@@ -14,10 +14,13 @@ import (
 func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if !strings.EqualFold(c.Request.URL.Path, "/api/voters/login") && !strings.EqualFold(c.Request.URL.Path, "/api/voters") {
+		if !strings.EqualFold(c.Request.URL.Path, "/api/voters/login") &&
+			!strings.EqualFold(c.Request.URL.Path, "/api/voters") &&
+			!strings.HasPrefix(c.Request.URL.Path, "/ui") {
 			session, _ := store.Get(c.Request, "session")
 			if session.Values["authenticated"] != true {
 				c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+				fmt.Println("Unauthorized access")
 				c.Abort()
 			} else {
 				user := session.Values["email"]
