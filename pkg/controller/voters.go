@@ -25,6 +25,7 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 
 	fmt.Println("Adding a new voter")
 	var voter v.VoterFull
+	voter.HasVoted = false
 
 	if err := ctx.BindJSON(&voter); err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -190,3 +191,5 @@ func (c *Controller) LogoutVoter(ctx *gin.Context) {
 		Message: "Voter logged out successfully",
 	})
 }
+
+

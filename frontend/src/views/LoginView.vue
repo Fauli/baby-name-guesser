@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router';
 import { ref, watchEffect } from 'vue'
 
 const API_URL = `http://localhost:8080/api/names`
@@ -43,6 +44,8 @@ const register = async () => {
       // Registration successful
       console.log('Login successful')
       loginStatus.value = 'success'
+      router.push('/voting')
+      // location.reload()
     } else {
       // Registration failed
       console.error('Login failed')
@@ -128,10 +131,7 @@ a {
   text-decoration: none;
   /* color: #42b883; */
 }
-li {
-  line-height: 1.5em;
-  margin-bottom: 20px;
-}
+
 .author,
 .date {
   font-weight: bold;
@@ -146,10 +146,7 @@ a {
   text-decoration: none;
   /* color: #42b883; */
 }
-li {
-  line-height: 1.5em;
-  margin-bottom: 20px;
-}
+
 .author,
 .date {
   font-weight: bold;

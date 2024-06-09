@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 
-const API_URL = `http://localhost:8080/api/names`
+const API_URL = `http://localhost:8080/api/votes/top`
 
 const names: any = ref<string[] | null>(null)
 
 var voteStatus = ref('')
 var failureReason = ref('')
+
+var counter = 1
 
 watchEffect(() => {
   voteStatus.value = ''
@@ -34,7 +36,7 @@ function handleNameSelection(name: string) {
 function submitVote() {
   console.log('Submitting vote for', selectedNames.value)
   var values = selectedNames.value
-  fetch('http://localhost:8080/api/votes', {
+  fetch('http://localhost:8080/api/votes/top', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -47,7 +49,7 @@ function submitVote() {
   .then(data => {
     console.log('Success:', data);
     // if errorcode is not 200, show an alert
-    if (!data.email)
+    if (data.email.length = 0)
     {
       voteStatus.value = 'failure'
       failureReason.value = data.message
@@ -73,16 +75,13 @@ function submitVote() {
     <p>Cannot fetch the name list: {{ names.message }}</p>
   </div>
   <div v-else>
-    <h1>Place your guess 🍼</h1>
-    <p>Select all your guesses, but choose wisely. You can only guess once!</p>
-    <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
-    <p>The vote only really counts once you transferred the matching sum</p>
+    <h1>👑 Top 3 guesses 👑</h1>
+    <p>Get a sneak peek on the 3 top voted names so far!</p>
     <hr>
     <br>
     <ul>
-      <p v-for="item in names.names" :key="item.value">
-        <input type="checkbox" v-model="selectedNames" :value="item" />
-        <span class="message"> &nbsp; {{ item }}</span><br>
+      <p v-for="(key, item) in names" :key="item">
+        <span class="message"> &nbsp; {{ counter++ }}. {{ key }}</span><br>
       </p>
     </ul>
 
@@ -93,7 +92,9 @@ function submitVote() {
     <div v-if="voteStatus === 'success' || voteStatus === 'failure'">
       <div class="important">
         <div v-if="voteStatus === 'success'" class="important-content green">
-          <p>Voting successful!</p>
+          <p>Voting successful!
+            <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
+          </p>
         </div>
         <div v-if="voteStatus === 'failure'" class="important-content red">
           <!-- TODO: [franz] Add reason why voting has failed here! -->

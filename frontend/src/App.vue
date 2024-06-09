@@ -4,7 +4,7 @@ import { ref, watchEffect } from 'vue'
 
 const API_URL = `/api`
 
-const userInfo: any = ref(null)
+const userInfo: any = ref('')
 
 // TODO: Maybe check https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/
 
@@ -26,7 +26,10 @@ watchEffect(async () => {
         <RouterLink to="/voting">Vote!</RouterLink>
         <!-- <RouterLink to="/check-in/null">Check-In</RouterLink> -->
         <span class="navItem" v-if="userInfo.name">
-          Logged in as <b>{{ userInfo.name }} {{ userInfo.last_name }}</b>
+          <RouterLink to="/top-votes">See top 3 votes</RouterLink>
+          <span style="border-left: 1px solid var(--color-border); padding: 0 1rem;">Logged in as <span style="font-weight: bold;">{{ userInfo.name }} {{ userInfo.last_name }}</span>
+          </span>
+          <!-- <a href="/api/voters/logout">Logout</a> -->
         </span>
         <span class="navItem" v-else>
           <RouterLink to="/login">Login</RouterLink>

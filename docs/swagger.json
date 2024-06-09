@@ -198,6 +198,145 @@
                 }
             }
         },
+        "/payments": {
+            "get": {
+                "description": "Get the payment information on how to transfer the bet money",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Get the payment information",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/payment.Payment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/payments/{email}": {
+            "get": {
+                "description": "Gets the payment status for the voters votes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Gets the payment status for the voters votes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email of the voter",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Set the payment status for the voter to true",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "summary": "Set the payment status for the voter to true",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email of the voter",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
         "/voters": {
             "post": {
                 "description": "Add a single new voter, used to register to the voting system",
@@ -658,11 +797,28 @@
                 }
             }
         },
+        "payment.Payment": {
+            "type": "object",
+            "properties": {
+                "paypal": {
+                    "type": "string"
+                },
+                "revolut": {
+                    "type": "string"
+                },
+                "twint": {
+                    "type": "string"
+                }
+            }
+        },
         "voters.Voter": {
             "type": "object",
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "has_voted": {
+                    "type": "boolean"
                 },
                 "last_name": {
                     "type": "string"
@@ -680,6 +836,9 @@
                 },
                 "event_password": {
                     "type": "string"
+                },
+                "has_voted": {
+                    "type": "boolean"
                 },
                 "last_name": {
                     "type": "string"

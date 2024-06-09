@@ -78,6 +78,9 @@ func main() {
 	votesGroup.GET("/top", c.GetTopVotes)
 
 	apiGroup.GET("/me", c.GetUserInformation)
+	apiGroup.GET("/payments", c.GetPayment)
+	apiGroup.POST("/payments/:email", c.PayForVotes)
+	apiGroup.GET("/payments/:email", c.HasUserPaid)
 
 	// Serve the Swagger documentation
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

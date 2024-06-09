@@ -2,8 +2,10 @@ package votes
 
 import (
 	"fmt"
+	"sort"
 
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 	"sbebe.ch/baby-name-guesser/pkg/voters"
 )
 
@@ -77,7 +79,7 @@ func GetVotesForVoters() ([]Vote, error) {
 
 }
 
-func GetTopVotes() (map[string]int, error) {
+func GetTopVotes() ([]utils.KV, error) {
 	// TODO: [franz] ensure the list is properly sorted when returned
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
@@ -88,5 +90,19 @@ func GetTopVotes() (map[string]int, error) {
 	if err != nil {
 		return nil, err
 	}
-	return votes, nil
+
+	vec := utils.MapToSlice(votes)
+
+	sort.Slice(vec, func(i, j int) bool {
+		// 1. value is different - sort by value (in reverse order)
+		if vec[i].Value != vec[j].Value {
+			return vec[i].Value > vec[j].Value
+		}
+		// 2. only when value is the same - sort by key
+		return vec[i].Key < vec[j].Key
+	})
+
+	fmt.Printf("%v", vec)
+
+	return vec, nil
 }

@@ -127,10 +127,7 @@ a {
   text-decoration: none;
   /* color: #42b883; */
 }
-li {
-  line-height: 1.5em;
-  margin-bottom: 20px;
-}
+
 .author,
 .date {
   font-weight: bold;

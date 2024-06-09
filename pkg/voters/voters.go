@@ -111,3 +111,39 @@ func HasUserVoted(email string) (bool, error) {
 	defer c.Close()
 	return c.HasUserVoted(email)
 }
+
+// PayForVotes pays for the votes.
+func PayForVotes(email string) error {
+	// Validate the input
+	if email == "" {
+		return fmt.Errorf("no email provided")
+	}
+
+	// Pay for the votes
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return err
+	}
+	defer c.Close()
+	err = c.PayForVotes(email)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// HasUserPaid checks if a user has already paid
+func HasUserPaid(email string) (bool, error) {
+	// Validate the input
+	if email == "" {
+		return false, fmt.Errorf("no email provided")
+	}
+
+	// Check if the user has paid
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return false, err
+	}
+	defer c.Close()
+	return c.HasUserPaid(email)
+}

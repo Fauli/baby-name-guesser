@@ -8,6 +8,8 @@ const (
 	adminEmail    = "aaaaaaaa@aaaaaaaa.ch"
 	connString    = "host=localhost port=5432 user=banague password=banaguePassword! dbname=baby_names sslmode=disable"
 	eventPassword = "mantis-shrimp"
+	twint         = "0796661337"
+	paypal        = "mail@domain.com"
 )
 
 // GetAdminEmail returns the email address of the admin.
@@ -23,6 +25,14 @@ func GetDatabaseConnectionString() string {
 // GetEventPassword returns the password for the event.
 func GetEventPassword() string {
 	return GetEnv("EVENT_PASSWORD", eventPassword)
+}
+
+func GetMobile() string {
+	return GetEnv("TWINT", twint)
+}
+
+func GetPaypal() string {
+	return GetEnv("PAYPAL", paypal)
 }
 
 // GetEnv returns the value of an environment variable or a fallback value if the variable is not set.

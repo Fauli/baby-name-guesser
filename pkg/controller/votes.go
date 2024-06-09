@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	n "sbebe.ch/baby-name-guesser/pkg/names"
 	"sbebe.ch/baby-name-guesser/pkg/utils"
+	"sbebe.ch/baby-name-guesser/pkg/voters"
 	v "sbebe.ch/baby-name-guesser/pkg/votes"
 )
 
@@ -72,6 +73,25 @@ func (c *Controller) AddVotes(ctx *gin.Context) {
 //	@Router			/votes [get]
 func (c *Controller) GetAllVotes(ctx *gin.Context) {
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can view all votes
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	result, err := v.GetVotes()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -136,14 +156,14 @@ func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
 //	@Tags			voting
 //	@Accept			json
 //	@Produce		json
-//	@Success		200					{object}	map[string]int
+//	@Success		200					{object}	[]string
 //	@Failure		400					{object}	HTTPError
 //	@Failure		404					{object}	HTTPError
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes/top [get]
 func (c *Controller) GetTopVotes(ctx *gin.Context) {
 
-	result, err := v.GetTopVotes()
+	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
@@ -152,5 +172,46 @@ func (c *Controller) GetTopVotes(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, result)
+	email := session.Values["email"]
+	if email == "" {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+	hasVoted, err := voters.HasUserVoted(email.(string))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only voters that have alredy voted can view the top votes
+	if !hasVoted && email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
+	var topVoted []string
+	result, err := v.GetTopVotes()
+	// only return the key values in the same order  as in the results slide
+	for _, name := range result {
+		topVoted = append(topVoted, name.Key)
+	}
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, topVoted)
 }

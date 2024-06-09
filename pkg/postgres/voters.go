@@ -102,6 +102,38 @@ func (c *PostgresClient) HasUserVoted(email string) (bool, error) {
 	return true, nil
 }
 
+// PayForVotes sets the is_paid flag to true for a given email.
+func (c *PostgresClient) PayForVotes(email string) error {
+	fmt.Printf("Paying for votes: %v\n", email)
+	_, err := c.db.Exec("UPDATE votes SET is_paid = true WHERE voter_fk = $1", email)
+	if err != nil {
+		return fmt.Errorf("failed to execute query: %v", err)
+	}
+
+	return nil
+}
+
+// HasUserPaid checks if a user has paid for their votes.
+// Basically returns the row with the value of is_paid column.
+func (c *PostgresClient) HasUserPaid(email string) (bool, error) {
+	fmt.Printf("Checking if user has paid: %v\n", email)
+	rows, err := c.db.Query("SELECT is_paid FROM votes WHERE voter_fk = $1 AND is_paid = true", email)
+	if err != nil {
+		return false, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	isPaid := false
+	for rows.Next() {
+		err := rows.Scan(&isPaid)
+		if err != nil {
+			return false, fmt.Errorf("failed to scan row: %v", err)
+		}
+	}
+
+	return isPaid, nil
+}
+
 // CREATE EXTENSION pgcrypto;
 
 // CREATE TABLE IF NOT EXISTS public.names

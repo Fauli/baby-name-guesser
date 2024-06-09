@@ -21,10 +21,21 @@ definitions:
           type: string
         type: array
     type: object
+  payment.Payment:
+    properties:
+      paypal:
+        type: string
+      revolut:
+        type: string
+      twint:
+        type: string
+    type: object
   voters.Voter:
     properties:
       email:
         type: string
+      has_voted:
+        type: boolean
       last_name:
         type: string
       name:
@@ -36,6 +47,8 @@ definitions:
         type: string
       event_password:
         type: string
+      has_voted:
+        type: boolean
       last_name:
         type: string
       name:
@@ -190,6 +203,98 @@ paths:
       summary: Delete a baby name
       tags:
       - names
+  /payments:
+    get:
+      consumes:
+      - application/json
+      description: Get the payment information on how to transfer the bet money
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payment.Payment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get the payment information
+      tags:
+      - payments
+  /payments/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Gets the payment status for the voters votes
+      parameters:
+      - description: Email of the voter
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Gets the payment status for the voters votes
+      tags:
+      - payments
+    post:
+      consumes:
+      - application/json
+      description: Set the payment status for the voter to true
+      parameters:
+      - description: Email of the voter
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Set the payment status for the voter to true
+      tags:
+      - payments
   /voters:
     post:
       consumes:
