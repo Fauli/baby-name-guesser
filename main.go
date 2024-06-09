@@ -10,6 +10,7 @@ import (
 	docs "sbebe.ch/baby-name-guesser/docs"
 	"sbebe.ch/baby-name-guesser/pkg/controller"
 	middleware "sbebe.ch/baby-name-guesser/pkg/middlware"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 
 	"github.com/gin-contrib/cors"
 )
@@ -18,7 +19,7 @@ const basePath = "/api"
 
 var (
 	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	sessionKey = []byte("tandaradeiIstDasGoldeneVomEiGut!")
+	sessionKey = []byte(utils.GetSessionKey())
 	// https://gowebexamples.com/sessions/
 	store = sessions.NewCookieStore(sessionKey)
 )

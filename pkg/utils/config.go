@@ -10,6 +10,7 @@ const (
 	eventPassword = "mantis-shrimp"
 	twint         = "0796661337"
 	paypal        = "mail@domain.com"
+	sessionKey    = "secret-session-key-1337!"
 )
 
 // GetAdminEmail returns the email address of the admin.
@@ -33,6 +34,10 @@ func GetMobile() string {
 
 func GetPaypal() string {
 	return GetEnv("PAYPAL", paypal)
+}
+
+func GetSessionKey() string {
+	return GetEnv("SESSION_KEY", sessionKey)
 }
 
 // GetEnv returns the value of an environment variable or a fallback value if the variable is not set.
