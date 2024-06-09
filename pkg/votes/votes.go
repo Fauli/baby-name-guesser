@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
+	"sbebe.ch/baby-name-guesser/pkg/voters"
 )
 
 const (
@@ -15,19 +16,35 @@ type Vote struct {
 	Names []string `json:"names"`
 }
 
-func AddVotes(voter string, votes []string) (Vote, error) {
+func AddVotes(email string, votes []string) (Vote, error) {
+
+	// Validate the input
+	if len(votes) == 0 {
+		return Vote{}, fmt.Errorf("no names to add")
+	}
+
+	hasVoted, err := voters.HasUserVoted(email)
+	if err != nil {
+		return Vote{}, fmt.Errorf("failed to check if user has voted: %v", err)
+	}
+
+	if hasVoted {
+		return Vote{}, fmt.Errorf("user has already voted")
+	}
+
+	// Add the votes
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return Vote{}, err
 	}
 	defer c.Close()
-	err = c.AddVotes(voter, votes)
+	err = c.AddVotes(email, votes)
 	if err != nil {
 		return Vote{}, err
 
 	}
 
-	return Vote{Email: voter, Names: votes}, nil
+	return Vote{Email: email, Names: votes}, nil
 }
 
 func GetVotes() (map[string]int, error) {
@@ -61,10 +78,15 @@ func GetVotesForVoters() ([]Vote, error) {
 }
 
 func GetTopVotes() (map[string]int, error) {
+	// TODO: [franz] ensure the list is properly sorted when returned
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return nil, err
 	}
 	defer c.Close()
-	return c.GetTopVotes(topVotes)
+	votes, err := c.GetTopVotes(topVotes)
+	if err != nil {
+		return nil, err
+	}
+	return votes, nil
 }

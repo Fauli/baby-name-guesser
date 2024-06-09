@@ -11,6 +11,7 @@ type Voter struct {
 	Name     string `json:"name"`
 	LastName string `json:"last_name"`
 	Email    string `json:"email"`
+	HasVoted bool   `json:"has_voted"`
 }
 
 type VoterFull struct {
@@ -100,4 +101,13 @@ func GetNameAndLastname(email string) (string, string, error) {
 	defer c.Close()
 	name, lastName, err := c.GetNameAndLastname(email)
 	return name, lastName, err
+}
+
+func HasUserVoted(email string) (bool, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return false, err
+	}
+	defer c.Close()
+	return c.HasUserVoted(email)
 }

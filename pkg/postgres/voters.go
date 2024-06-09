@@ -78,6 +78,30 @@ func (c *PostgresClient) GetNameAndLastname(email string) (string, string, error
 	return name, lastName, nil
 }
 
+// HasUserVoted checks if a user has already voted
+func (c *PostgresClient) HasUserVoted(email string) (bool, error) {
+	fmt.Printf("Checking if user has voted: %v\n", email)
+	rows, err := c.db.Query("SELECT voter_fk FROM votes WHERE voter_fk = $1", email)
+	if err != nil {
+		return false, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	var voter string
+	for rows.Next() {
+		err := rows.Scan(&voter)
+		if err != nil {
+			return false, fmt.Errorf("failed to scan row: %v", err)
+		}
+	}
+
+	if voter == "" {
+		return false, nil
+	}
+
+	return true, nil
+}
+
 // CREATE EXTENSION pgcrypto;
 
 // CREATE TABLE IF NOT EXISTS public.names

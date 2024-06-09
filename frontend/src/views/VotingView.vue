@@ -5,6 +5,13 @@ const API_URL = `http://localhost:8080/api/names`
 
 const names: any = ref<string[] | null>(null)
 
+var voteStatus = ref('')
+var failureReason = ref('')
+
+watchEffect(() => {
+  voteStatus.value = ''
+  failureReason.value = ''
+})
 
 watchEffect(async () => {
   // this effect will run immediately and then
@@ -39,10 +46,12 @@ function submitVote() {
   .then(response => response.json())
   .then(data => {
     console.log('Success:', data);
-    alert('Vote submitted')
     // if errorcode is not 200, show an alert
     if (data.status !== 200) {
-      alert('Error: ' + data.error);
+      voteStatus.value = 'failure'
+      failureReason.value = data.message
+    } else {
+      voteStatus.value = 'success'
     }
     
   })
@@ -60,17 +69,16 @@ function submitVote() {
     <h1>Loading...</h1>
   </div>
   <div v-else>
-    <h1>List of all possible names</h1>
-    <p>This site shows all discussed names.</p>
-    <p>There are currently <b>{{ names.names.length }}</b> available to choose from.</p>
-   
-    <br>
+    <h1>Place your guess 🍼</h1>
+    <p>Select all your guesses, but choose wisely. You can only guess once!</p>
+    <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
+    <p>The vote only really counts once you transferred the matching sum</p>
     <hr>
     <br>
     <ul>
       <p v-for="item in names.names" :key="item.value">
-      <input type="checkbox" v-model="selectedNames" :value="item" />
-      <span class="message"> &nbsp; {{ item }}</span><br>
+        <input type="checkbox" v-model="selectedNames" :value="item" />
+        <span class="message"> &nbsp; {{ item }}</span><br>
       </p>
     </ul>
 
@@ -78,20 +86,61 @@ function submitVote() {
     <hr>
     <br>
 
-    <p v-if="selectedNames.length > 0">You will be voting for:</p>
-    <ul>
-      <li v-for="name in selectedNames" :key="name">{{ name }}</li>
-    </ul>
+    <div v-if="voteStatus === 'success' || voteStatus === 'failure'">
+      <div class="important">
+        <div v-if="voteStatus === 'success'" class="important-content green">
+          <p>Voting successful!
+            <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
+          </p>
+        </div>
+        <div v-if="voteStatus === 'failure'" class="important-content red">
+          <!-- TODO: [franz] Add reason why voting has failed here! -->
+          <p>Voting has failed!</p>
+          <p>Reason: {{ failureReason }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="selectedNames.length > 0">
+      <p>You will be voting for:</p>
+      <ul>
+        <li v-for="name in selectedNames" :key="name">{{ name }}</li>
+      </ul>
+      <p>This results in a bet of <span style="font-weight: bold; text-decoration: underline;">{{ selectedNames.length * 10 }} Franken</span></p>
+      <p>You can use twint, revolut or paypal - please mark your name when transferring 💙</p>
+    </div>
     <br>
     <button @click="submitVote" class="submit-button">Submit Vote</button>
-
-
 
 
   </div>
 </template>
 
 <style>
+
+.important {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.red {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+}
+
+.green {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+}
 
 hr {
   border: none;

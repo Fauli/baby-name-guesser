@@ -1,6 +1,8 @@
 package postgres
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // GetVoterVotesForNames returns a list of names and the number of votes for each name.
 func (c *PostgresClient) GetVotesForNames() (map[string]int, error) {
