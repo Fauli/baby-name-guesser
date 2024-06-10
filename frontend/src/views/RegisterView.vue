@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 
-const API_URL = `http://localhost:8080/api/names`
+const API_URL = `/api/names`
 
 const names: any = ref<string[] | null>(null)
 
@@ -35,7 +35,7 @@ const register = async () => {
   }
 
   try {
-    const response = await fetch('http://localhost:8080/api/voters', {
+    const response = await fetch('/api/voters', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

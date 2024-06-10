@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 
-const API_URL = `http://localhost:8080/api`
+const API_URL = `/api`
 
 const names: any = ref<string[] | null>(null)
 
@@ -53,7 +53,7 @@ function handleNameSelection(name: string) {
 function submitVote() {
   console.log('Submitting vote for', selectedNames.value)
   var values = selectedNames.value
-  fetch('http://localhost:8080/api/votes', {
+  fetch('/api/votes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
