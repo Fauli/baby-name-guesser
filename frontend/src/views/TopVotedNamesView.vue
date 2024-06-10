@@ -64,6 +64,18 @@ function submitVote() {
   });
 }
 
+function getMedal(counter: number) {
+  if (counter == 1) {
+    return "🥇"
+  } else if (counter == 2) {
+    return "🥈"
+  } else if (counter == 3) {
+    return "🥉"
+  } else {
+    return "🏅"
+  }
+}
+
 </script>
 
 
@@ -81,39 +93,9 @@ function submitVote() {
     <br>
     <ul>
       <p v-for="(key, item) in names" :key="item">
-        <span class="message"> &nbsp; {{ counter++ }}. {{ key }}</span><br>
+        <span class="message"> &nbsp; {{ getMedal(counter)}} {{ counter++ }}. {{ key }}</span><br>
       </p>
     </ul>
-
-    <br>
-    <hr>
-    <br>
-
-    <div v-if="voteStatus === 'success' || voteStatus === 'failure'">
-      <div class="important">
-        <div v-if="voteStatus === 'success'" class="important-content green">
-          <p>Voting successful!
-            <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
-          </p>
-        </div>
-        <div v-if="voteStatus === 'failure'" class="important-content red">
-          <!-- TODO: [franz] Add reason why voting has failed here! -->
-          <p>Voting has failed!</p>
-          <p>Reason: {{ failureReason }}</p>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="selectedNames.length > 0">
-      <p>You will be voting for:</p>
-      <ul>
-        <li v-for="name in selectedNames" :key="name">{{ name }}</li>
-      </ul>
-      <p>This results in a bet of <span style="font-weight: bold; text-decoration: underline;">{{ selectedNames.length * 10 }} Franken</span></p>
-      <p>You can use twint, revolut or paypal - please mark your name when transferring 💙</p>
-    </div>
-    <br>
-    <button @click="submitVote" class="submit-button">Submit Vote</button>
 
 
   </div>
