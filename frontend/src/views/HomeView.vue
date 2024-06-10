@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TandaradeiWelcome from '../components/TandaradeiWelcome.vue'
+import BanagueWelcome from '../components/BanagueWelcome.vue'
 </script>
 
 <template>
   <main>
-    <TandaradeiWelcome />
+    <BanagueWelcome />
   </main>
 </template>
