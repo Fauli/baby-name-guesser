@@ -50,7 +50,7 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.Static("/ui/", "./frontend/dist")
+	router.Static("/game/", "./frontend/dist")
 
 	// validate if users are logged in
 	router.Use(middleware.ValidateSession(store))

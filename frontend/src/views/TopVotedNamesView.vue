@@ -90,8 +90,8 @@ function getMedal(counter: number) {
     <p style="font-style: italic;">Details: {{ names.message }}</p>
   </div>
   <div v-else>
-    <h1>👑 Top 3 guesses 👑</h1>
-    <p>Get a sneak peek on the 3 top guessed names so far!</p>
+    <h1>Top 3 guesses 📊</h1>
+    <p>Get a sneak peek on the 3 top guessed names so far...</p>
     <hr>
     <ul style="padding-left: 0px;">
       <p v-for="(key, item) in names" :key="item">

@@ -16,7 +16,7 @@ func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 
 		if !strings.EqualFold(c.Request.URL.Path, "/api/voters/login") &&
 			!strings.EqualFold(c.Request.URL.Path, "/api/voters") &&
-			!strings.HasPrefix(c.Request.URL.Path, "/ui") {
+			!strings.HasPrefix(c.Request.URL.Path, "/game") {
 			session, _ := store.Get(c.Request, "session")
 			if session.Values["authenticated"] != true {
 				c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})

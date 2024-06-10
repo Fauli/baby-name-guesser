@@ -15,7 +15,7 @@ export default defineConfig({
     // outDir: '../static'
     
   },
-  base: '/ui/',
+  base: '/game/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

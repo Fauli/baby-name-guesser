@@ -1,12 +1,31 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 
-const API_URL = `http://localhost:8080/api/names`
+const API_URL = `http://localhost:8080/api`
 
 const names: any = ref<string[] | null>(null)
 
 var voteStatus = ref('')
 var failureReason = ref('')
+
+const userInfo: any = ref('')
+const paymentInfo: any = ref('')
+
+// TODO: Maybe check https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/
+
+watchEffect(async () => {
+  // this effect will run immediately and then
+  // re-run whenever currentBranch.value changes
+  const url = `${API_URL}/me`
+  userInfo.value = await (await fetch(url)).json()
+})
+
+watchEffect(async () => {
+  // this effect will run immediately and then
+  // re-run whenever currentBranch.value changes
+  const url = `${API_URL}/payments`
+  paymentInfo.value = await (await fetch(url)).json()
+})
 
 watchEffect(() => {
   voteStatus.value = ''
@@ -16,7 +35,7 @@ watchEffect(() => {
 watchEffect(async () => {
   // this effect will run immediately and then
   // re-run whenever currentBranch.value changes
-  const url = `${API_URL}`
+  const url = `${API_URL}/names`
   names.value = await (await fetch(url)).json()
 })
 
@@ -53,6 +72,9 @@ function submitVote() {
       failureReason.value = data.message
     } else {
       voteStatus.value = 'success'
+      setTimeout(() => {
+        location.reload()
+      }, 2000)
     }
     
   })
@@ -70,49 +92,78 @@ function submitVote() {
     <h1>Loading...</h1>
   </div>
   <div v-else-if="names.message">
-    <p>Cannot fetch the name list: {{ names.message }}</p>
+    <h1>Register and Login to bet 🥳</h1>
+    <p>After you are logged-in you can place your bets!</p>
+    <br />
+    <p style="font-style: italic;">Details: {{ names.message }}</p>
   </div>
   <div v-else>
-    <h1>Place your guess 🍼</h1>
-    <p>Select all your guesses, but choose wisely. You can only guess once!</p>
-    <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
-    <p>The vote only really counts once you transferred the matching sum</p>
-    <hr>
-    <br>
-    <ul>
-      <p v-for="item in names.names" :key="item.value">
-        <input type="checkbox" v-model="selectedNames" :value="item" />
-        <span class="message"> &nbsp; {{ item }}</span><br>
-      </p>
-    </ul>
+    <div v-if="userInfo.has_voted">
+      <h1>Thank you for voting 💙</h1>
+      <br />
+      <p>Transfer the bet money to one of the following accounts to finalize your participation:</p>
+      <table>
+        <tr>
+          <td>Twint</td>
+          <td>{{ paymentInfo.twint }}</td>
+        </tr>
+        <tr>
+          <td>Revolut</td>
+          <td>{{ paymentInfo.revolut }}</td>
+        </tr>
+        <tr>
+          <td>Paypal</td>
+          <td>{{ paymentInfo.paypal }}</td>
+        </tr>
+      </table>
+      <br />
+      <p>Thank you for participating in the name game!</p>
+      <p>We will be sending out the results after the 20.08.2024 🥰</p>
+    </div>
+    <div v-else>
+      <h1>Place your guess 🍼</h1>
+      <p>Select all your guesses, but choose wisely. You can only guess once!</p>
+      <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
+      <p>The vote only really counts once you transferred the matching sum</p>
+      <hr>
+      <br>
+      <ul>
+        <p v-for="item in names.names" :key="item.value">
+          <input type="checkbox" v-model="selectedNames" :value="item" />
+          <span class="message"> &nbsp; {{ item }}</span><br>
+        </p>
+      </ul>
 
-    <br>
-    <hr>
-    <br>
+      <br>
+      <hr>
+      <br>
 
-    <div v-if="voteStatus === 'success' || voteStatus === 'failure'">
-      <div class="important">
-        <div v-if="voteStatus === 'success'" class="important-content green">
-          <p>Voting successful!</p>
-        </div>
-        <div v-if="voteStatus === 'failure'" class="important-content red">
-          <!-- TODO: [franz] Add reason why voting has failed here! -->
-          <p>Voting has failed!</p>
-          <p>Reason: {{ failureReason }}</p>
+      <div v-if="voteStatus === 'success' || voteStatus === 'failure'">
+        <div class="important">
+          <div v-if="voteStatus === 'success'" class="important-content green">
+            <p>Voting successful!</p>
+          </div>
+          <div v-if="voteStatus === 'failure'" class="important-content red">
+            <!-- TODO: [franz] Add reason why voting has failed here! -->
+            <p>Voting has failed!</p>
+            <p>Reason: {{ failureReason }}</p>
+          </div>
         </div>
       </div>
+
+      <div v-if="selectedNames.length > 0">
+        <p>You will be voting for:</p>
+        <ul>
+          <li v-for="name in selectedNames" :key="name">{{ name }}</li>
+        </ul>
+        <p>This results in a bet of <span style="font-weight: bold; text-decoration: underline;">{{ selectedNames.length
+    * 10 }} Franken</span></p>
+        <p>You can use twint, revolut or paypal - please mark your name when transferring 💙</p>
+      </div>
+      <br>
+      <button @click="submitVote" class="submit-button">Submit Vote</button>
     </div>
 
-    <div v-if="selectedNames.length > 0">
-      <p>You will be voting for:</p>
-      <ul>
-        <li v-for="name in selectedNames" :key="name">{{ name }}</li>
-      </ul>
-      <p>This results in a bet of <span style="font-weight: bold; text-decoration: underline;">{{ selectedNames.length * 10 }} Franken</span></p>
-      <p>You can use twint, revolut or paypal - please mark your name when transferring 💙</p>
-    </div>
-    <br>
-    <button @click="submitVote" class="submit-button">Submit Vote</button>
 
 
   </div>

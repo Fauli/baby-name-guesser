@@ -62,10 +62,13 @@ body {
   min-height: 100vh;
   /* color: var(--color-text); */
   background: var(--color-background);
-  transition:
+  background-image: url("bg3.png");
+  background-position: right 20px bottom 20px; /*Positioning*/
+  background-repeat: no-repeat; /*Prevent showing multiple background images*/  transition:
     color 0.5s,
     background-color 0.5s;
   line-height: 1.6;
+  background-size: 20%;
   font-family:
     Inter,
     -apple-system,
