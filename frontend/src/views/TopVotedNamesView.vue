@@ -84,16 +84,18 @@ function getMedal(counter: number) {
     <h1>Loading...</h1>
   </div>
   <div v-else-if="names.message">
-    <p>Cannot fetch the name list: {{ names.message }}</p>
+    <h1>Not quite yet...</h1>
+    <p>You will only be able to view the top 3 guessed names so far after you guessed yourself ⭐️</p>
+    <br />
+    <p style="font-style: italic;">Details: {{ names.message }}</p>
   </div>
   <div v-else>
     <h1>👑 Top 3 guesses 👑</h1>
-    <p>Get a sneak peek on the 3 top voted names so far!</p>
+    <p>Get a sneak peek on the 3 top guessed names so far!</p>
     <hr>
-    <br>
-    <ul>
+    <ul style="padding-left: 0px;">
       <p v-for="(key, item) in names" :key="item">
-        <span class="message"> &nbsp; {{ getMedal(counter)}} {{ counter++ }}. {{ key }}</span><br>
+        <span style="font-size: xx-large;" class="message"> &nbsp; {{ getMedal(counter++)}} {{ key }}</span><br>
       </p>
     </ul>
 

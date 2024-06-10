@@ -44,7 +44,10 @@ const register = async () => {
       // Registration successful
       console.log('Login successful')
       loginStatus.value = 'success'
-      router.push('/voting')
+      // router.push('/voting')
+      router
+          .push({ path: '/voting' })
+          .then(() => { router.go(0) })
       // location.reload()
     } else {
       // Registration failed
