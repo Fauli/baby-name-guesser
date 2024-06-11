@@ -158,9 +158,5 @@ a {
   font-weight: bold;
 }
 
-.qr-code {
-  width: 256px;
-  height: 256px;
-}
 
 </style>

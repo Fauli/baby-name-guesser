@@ -149,26 +149,14 @@ a {
   font-weight: bold;
 }
 
-.qr-code {
-  width: 256px;
-  height: 256px;
-}
 
 a {
   text-decoration: none;
   /* color: #42b883; */
 }
-li {
-  line-height: 1.5em;
-  margin-bottom: 20px;
-}
 .author,
 .date {
   font-weight: bold;
-}
-.qr-code {
-  width: 256px;
-  height: 256px;
 }
 
 form {

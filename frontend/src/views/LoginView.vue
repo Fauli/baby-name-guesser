@@ -140,10 +140,6 @@ a {
   font-weight: bold;
 }
 
-.qr-code {
-  width: 256px;
-  height: 256px;
-}
 
 a {
   text-decoration: none;
@@ -153,10 +149,6 @@ a {
 .author,
 .date {
   font-weight: bold;
-}
-.qr-code {
-  width: 256px;
-  height: 256px;
 }
 
 form {
