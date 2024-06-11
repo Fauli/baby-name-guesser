@@ -145,7 +145,6 @@ function submitVote() {
       <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
       <p>The vote only really counts once you transferred the matching sum</p>
       <hr>
-      <br>
       <ul>
         <p v-for="item in names.names" :key="item.value">
           <input type="checkbox" v-model="selectedNames" :value="item" />
