@@ -109,7 +109,7 @@ func (c *PostgresClient) GetTopVotes(limit int) (map[string]int, error) {
 
 // GetVotesForVoter returns the votes for a voter.
 func (c *PostgresClient) GetVotesForVoter(email string) ([]string, error) {
-	rows, err := c.db.Query("SELECT names_fk FROM votes WHERE voter_fk = $1", email)
+	rows, err := c.db.Query("SELECT names_fk FROM votes WHERE voter_fk = $1 ORDER BY names_fk ASC", email)
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute query: %v", err)
 	}
