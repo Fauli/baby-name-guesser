@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -46,4 +47,14 @@ func GetEnv(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func PrintAllConfig() {
+	fmt.Println("Using following configuration:")
+	fmt.Printf("ADMIN_EMAIL: %s\n", GetAdminEmail())
+	fmt.Printf("DATABASE_URL: %s\n", GetDatabaseConnectionString())
+	fmt.Printf("EVENT_PASSWORD: %s\n", GetEventPassword())
+	fmt.Printf("TWINT: %s\n", GetMobile())
+	fmt.Printf("PAYPAL: %s\n", GetPaypal())
+	fmt.Printf("SESSION_KEY: %s\n", GetSessionKey())
 }

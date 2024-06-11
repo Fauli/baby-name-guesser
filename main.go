@@ -25,6 +25,7 @@ var (
 )
 
 func main() {
+	utils.PrintAllConfig()
 	docs.SwaggerInfo.BasePath = basePath
 
 	// Create a new Gin router
