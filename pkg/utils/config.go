@@ -61,4 +61,5 @@ func PrintAllConfig() {
 	fmt.Printf("TWINT: %s\n", GetMobile())
 	fmt.Printf("PAYPAL: %s\n", GetPaypal())
 	fmt.Printf("SESSION_KEY: %s\n", GetSessionKey())
+	fmt.Printf("BANAGUE_DEBUG: %t\n", IsDebug())
 }
