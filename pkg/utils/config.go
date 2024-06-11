@@ -41,6 +41,10 @@ func GetSessionKey() string {
 	return GetEnv("SESSION_KEY", sessionKey)
 }
 
+func IsDebug() bool {
+	return GetEnv("BANAGUE_DEBUG", "false") == "true"
+}
+
 // GetEnv returns the value of an environment variable or a fallback value if the variable is not set.
 func GetEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {

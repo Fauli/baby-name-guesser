@@ -72,17 +72,19 @@ const register = async () => {
     <br />
     <br />
 
-    <div v-if="registrationStatus === 'success' || registrationStatus === 'failure'">
-    <div class="important">
-      <div class="important-content">
-        <p v-if="registrationStatus === 'success'">Registration successful!
-          <br />Now you can <RouterLink to="/voting">Vote!</RouterLink>
-</p>
-        <p v-if="registrationStatus === 'failure'">Registration failed!</p>
-        
+  <div v-if="registrationStatus === 'success' || registrationStatus === 'failure'">
+      <div class="important">
+        <div v-if="registrationStatus === 'success'" class="important-content green">
+          <p>
+            Registration successful!
+          </p>
+        </div>
+        <div v-if="registrationStatus === 'failure'" class="important-content red">
+          <p>Registration failed!</p>
+        </div>
       </div>
     </div>
-  </div>
+
 
     <form>
       <label for="name">Your Name:</label>
@@ -110,14 +112,28 @@ const register = async () => {
 <style>
 
 .important {
-  background-color: #f8d7da;
-  color: #721c24;
   padding: 10px;
-  border: 1px solid #f5c6cb;
   border-radius: 5px;
   margin-bottom: 20px;
 }
 
+.red {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+}
+
+.green {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+}
 .important-content {
   font-weight: bold;
 }

@@ -7,12 +7,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 // ValidateSession checks if a valid session is present.
 // If not, it will return a 401 unauthorized error.
 func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if utils.IsDebug() {
+			fmt.Println("--------------------")
+			fmt.Printf("URL: %s\n", c.Request.URL)
+			fmt.Printf("METHOD: %s\n", c.Request.Method)
+			fmt.Printf("HEADER: %s\n", c.Request.Header)
+			fmt.Printf("BODY: %s\n", c.Request.Body)
+			fmt.Println("--------------------")
+		}
 
 		if !strings.EqualFold(c.Request.URL.Path, "/api/voters/login") &&
 			!strings.EqualFold(c.Request.URL.Path, "/api/voters") &&

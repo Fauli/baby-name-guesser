@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	swaggerfiles "github.com/swaggo/files"
@@ -11,8 +9,6 @@ import (
 	"sbebe.ch/baby-name-guesser/pkg/controller"
 	middleware "sbebe.ch/baby-name-guesser/pkg/middlware"
 	"sbebe.ch/baby-name-guesser/pkg/utils"
-
-	"github.com/gin-contrib/cors"
 )
 
 const basePath = "/api"
@@ -39,17 +35,15 @@ func main() {
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.Recovery())
 
-	// allow all cores traffic for now
-	// TODO: [franz] fix this to only allow the frontend
-	// https://github.com/gin-contrib/cors
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"*"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
+	// // https://github.com/gin-contrib/cors
+	// router.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"http://localhost:5173"},
+	// 	AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
+	// 	AllowHeaders:     []string{"*"},
+	// 	ExposeHeaders:    []string{"*"},
+	// 	AllowCredentials: true,
+	// 	MaxAge:           12 * time.Hour,
+	// }))
 
 	router.Static("/game/", "./frontend/dist")
 
