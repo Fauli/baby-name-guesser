@@ -12,5 +12,5 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-# docker build -t qreator/frontend:0.0.1 .
-# docker run -it -p 8080:80 --rm --name qreator-frontend-1 qreator/frontend:0.0.1
+# docker build -t banague/frontend:0.0.1 .
+# docker run -it -p 8080:80 --rm --name banague-frontend-1 banague/frontend:0.0.1
