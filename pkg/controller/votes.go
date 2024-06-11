@@ -104,6 +104,43 @@ func (c *Controller) GetAllVotes(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// GetAllVotes godoc
+//
+//	@Summary		Get all votes for the names
+//	@Description	Get all votes for the names aggregated
+//	@Tags			voting
+//	@Accept			json
+//	@Produce		json
+//	@Success		200					{object}	map[string]int
+//	@Failure		400					{object}	HTTPError
+//	@Failure		404					{object}	HTTPError
+//	@Failure		500					{object}	HTTPError
+//	@Router			/votes/me [get]
+func (c *Controller) GetPersonalVotes(ctx *gin.Context) {
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can view all votes
+	email := session.Values["email"].(string)
+	result, err := v.GetVotesForVoter(email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result)
+}
+
 // GetVotesPerVoters godoc
 //
 //	@Summary		Get all votes for the voters

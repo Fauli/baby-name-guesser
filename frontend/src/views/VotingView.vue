@@ -10,6 +10,7 @@ var failureReason = ref('')
 
 const userInfo: any = ref('')
 const paymentInfo: any = ref('')
+const votedNames: any = ref<string[]>([])
 
 // TODO: Maybe check https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/
 
@@ -19,6 +20,15 @@ watchEffect(async () => {
   const url = `${API_URL}/me`
   userInfo.value = await (await fetch(url)).json()
 })
+
+watchEffect(async () => {
+  // this effect will run immediately and then
+  // re-run whenever currentBranch.value changes
+  const url = `${API_URL}/votes/me`
+  votedNames.value = await (await fetch(url)).json()
+})
+
+
 
 watchEffect(async () => {
   // this effect will run immediately and then
@@ -104,21 +114,30 @@ function submitVote() {
       <p>Transfer the bet money to one of the following accounts to finalize your participation:</p>
       <table>
         <tr>
-          <td>Twint</td>
-          <td>{{ paymentInfo.twint }}</td>
+          <td class="label">Amount</td>
+          <td class="value">{{ votedNames.length * 10  }}.00</td>
         </tr>
         <tr>
-          <td>Revolut</td>
-          <td>{{ paymentInfo.revolut }}</td>
+          <td class="label">Twint</td>
+          <td class="value">{{ paymentInfo.twint }}</td>
         </tr>
         <tr>
-          <td>Paypal</td>
-          <td>{{ paymentInfo.paypal }}</td>
+          <td class="label">Revolut</td>
+          <td class="value">{{ paymentInfo.revolut }}</td>
+        </tr>
+        <tr>
+          <td class="label">Paypal</td>
+          <td class="value">{{ paymentInfo.paypal }}</td>
         </tr>
       </table>
       <br />
       <p>Thank you for participating in the name game!</p>
       <p>We will be sending out the results after the 20.08.2024 🥰</p>
+      <br />
+      <h2>Your votes:</h2>
+      <ul>
+        <li v-for="name in votedNames" :key="name">{{ name }}</li>
+      </ul>
     </div>
     <div v-else>
       <h1>Place your guess 🍼</h1>
@@ -157,7 +176,7 @@ function submitVote() {
           <li v-for="name in selectedNames" :key="name">{{ name }}</li>
         </ul>
         <p>This results in a bet of <span style="font-weight: bold; text-decoration: underline;">{{ selectedNames.length
-    * 10 }} Franken</span></p>
+            * 10 }} Franken</span></p>
         <p>You can use twint, revolut or paypal - please mark your name when transferring 💙</p>
       </div>
       <br>
@@ -170,6 +189,14 @@ function submitVote() {
 </template>
 
 <style>
+
+.label {
+  width: 100px;
+}
+
+.value {
+  font-weight: bold;
+}
 
 .important {
   padding: 10px;

@@ -106,3 +106,12 @@ func GetTopVotes() ([]utils.KV, error) {
 
 	return vec, nil
 }
+
+func GetVotesForVoter(email string) ([]string, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+	return c.GetVotesForVoter(email)
+}

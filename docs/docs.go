@@ -685,6 +685,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/votes/me": {
+            "get": {
+                "description": "Get all votes for the names aggregated",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "voting"
+                ],
+                "summary": "Get all votes for the names",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
         "/votes/top": {
             "get": {
                 "description": "Get the top votes for the names",
@@ -702,9 +746,9 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "integer"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
                             }
                         }
                     },

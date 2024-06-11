@@ -517,6 +517,35 @@ paths:
       summary: Add a single new voter
       tags:
       - voting
+  /votes/me:
+    get:
+      consumes:
+      - application/json
+      description: Get all votes for the names aggregated
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get all votes for the names
+      tags:
+      - voting
   /votes/top:
     get:
       consumes:
@@ -528,9 +557,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: integer
-            type: object
+            items:
+              type: string
+            type: array
         "400":
           description: Bad Request
           schema:

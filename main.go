@@ -73,6 +73,7 @@ func main() {
 	votesGroup.POST("", c.AddVotes)
 	votesGroup.GET("/voters", c.GetVotesPerVoters)
 	votesGroup.GET("/top", c.GetTopVotes)
+	votesGroup.GET("/me", c.GetPersonalVotes)
 
 	paymentsGroup.GET("", c.GetPayment)
 	paymentsGroup.POST("/:email", c.PayForVotes)

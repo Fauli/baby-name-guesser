@@ -106,3 +106,24 @@ func (c *PostgresClient) GetTopVotes(limit int) (map[string]int, error) {
 
 	return votes, nil
 }
+
+// GetVotesForVoter returns the votes for a voter.
+func (c *PostgresClient) GetVotesForVoter(email string) ([]string, error) {
+	rows, err := c.db.Query("SELECT names_fk FROM votes WHERE voter_fk = $1", email)
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	var votes []string
+	for rows.Next() {
+		var name string
+		err := rows.Scan(&name)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		votes = append(votes, name)
+	}
+
+	return votes, nil
+}
