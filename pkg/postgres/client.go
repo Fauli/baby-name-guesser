@@ -15,6 +15,7 @@ func NewPostgresClient() (*PostgresClient, error) {
 	connString := utils.GetDatabaseConnectionString()
 	db, err := sql.Open("postgres", connString)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to connect to the database: %v", err)
 		return nil, fmt.Errorf("failed to connect to the database: %v", err)
 	}
 

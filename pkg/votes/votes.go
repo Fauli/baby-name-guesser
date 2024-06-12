@@ -27,6 +27,7 @@ func AddVotes(email string, votes []string) (Vote, error) {
 
 	hasVoted, err := voters.HasUserVoted(email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to check if user has voted: %v", err)
 		return Vote{}, fmt.Errorf("failed to check if user has voted: %v", err)
 	}
 
@@ -37,11 +38,13 @@ func AddVotes(email string, votes []string) (Vote, error) {
 	// Add the votes
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return Vote{}, err
 	}
 	defer c.Close()
 	err = c.AddVotes(email, votes)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to add votes: %v", err)
 		return Vote{}, err
 
 	}
@@ -52,6 +55,7 @@ func AddVotes(email string, votes []string) (Vote, error) {
 func GetVotes() (map[string]int, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return nil, err
 	}
 	defer c.Close()
@@ -61,11 +65,13 @@ func GetVotes() (map[string]int, error) {
 func GetVotesForVoters() ([]Vote, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return nil, err
 	}
 	defer c.Close()
 	voteMap, err := c.GetAllVotesPerMail()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to get all votes per mail: %v", err)
 		return nil, err
 	}
 
@@ -83,11 +89,13 @@ func GetTopVotes() ([]utils.KV, error) {
 	// TODO: [franz] ensure the list is properly sorted when returned
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return nil, err
 	}
 	defer c.Close()
 	votes, err := c.GetTopVotes(topVotes)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to get top votes: %v", err)
 		return nil, err
 	}
 
@@ -110,6 +118,7 @@ func GetTopVotes() ([]utils.KV, error) {
 func GetVotesForVoter(email string) ([]string, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return nil, err
 	}
 	defer c.Close()

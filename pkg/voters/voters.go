@@ -48,11 +48,13 @@ func AddVoter(voter VoterFull) (Voter, error) {
 	fmt.Printf("Adding new voter: %s %s [%s]\n", voter.Name, voter.LastName, voter.Email)
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return Voter{}, err
 	}
 	defer c.Close()
 	err = c.AddVoter(voter.Name, voter.LastName, voter.Email, voter.Password)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to add voter: %v", err)
 		return Voter{}, err
 
 	}
@@ -63,6 +65,7 @@ func AddVoter(voter VoterFull) (Voter, error) {
 func DeleteVoterByEmail(email string) error {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return err
 	}
 	defer c.Close()
@@ -73,11 +76,13 @@ func DeleteVoterByEmail(email string) error {
 func GetVoterByEmail(email string) (Voter, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return Voter{}, err
 	}
 	defer c.Close()
 	name, lastName, err := c.GetNameAndLastname(email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to get voter: %v", err)
 		return Voter{}, err
 	}
 	return Voter{Email: email, Name: name, LastName: lastName}, nil
@@ -86,6 +91,7 @@ func GetVoterByEmail(email string) (Voter, error) {
 func LoginVoter(email, password string) (bool, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return false, err
 	}
 	defer c.Close()
@@ -96,6 +102,7 @@ func LoginVoter(email, password string) (bool, error) {
 func GetNameAndLastname(email string) (string, string, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return "", "", err
 	}
 	defer c.Close()
@@ -106,6 +113,7 @@ func GetNameAndLastname(email string) (string, string, error) {
 func HasUserVoted(email string) (bool, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return false, err
 	}
 	defer c.Close()
@@ -122,11 +130,13 @@ func PayForVotes(email string) error {
 	// Pay for the votes
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return err
 	}
 	defer c.Close()
 	err = c.PayForVotes(email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to pay for votes: %v", err)
 		return err
 	}
 	return nil
@@ -142,6 +152,7 @@ func HasUserPaid(email string) (bool, error) {
 	// Check if the user has paid
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
 		return false, err
 	}
 	defer c.Close()

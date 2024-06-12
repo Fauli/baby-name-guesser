@@ -12,6 +12,8 @@ const (
 	twint         = "0796661337"
 	paypal        = "mail@domain.com"
 	sessionKey    = "secret-session-key-1337!"
+	uiPath        = "/game/"
+	serverAndPort = "localhost:8080"
 )
 
 // GetAdminEmail returns the email address of the admin.
@@ -46,7 +48,11 @@ func IsDebug() bool {
 }
 
 func GetUIPath() string {
-	return GetEnv("UI_PATH", "/game/")
+	return GetEnv("UI_PATH", uiPath)
+}
+
+func GetServerAndPort() string {
+	return GetEnv("SERVER_AND_PORT", serverAndPort)
 }
 
 // GetEnv returns the value of an environment variable or a fallback value if the variable is not set.

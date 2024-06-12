@@ -12,6 +12,7 @@ func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error 
 	_, err := c.db.Exec("INSERT INTO voters (name, last_name, email, password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf')))",
 		name, lastName, email, passwort)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return fmt.Errorf("failed to execute query: %v", err)
 	}
 
@@ -23,6 +24,7 @@ func (c *PostgresClient) DeleteVoter(email string) error {
 	utils.Logger.Sugar().Infof("Deleting voter from DB: %v\n", email)
 	_, err := c.db.Exec("DELETE FROM voters WHERE email = $1", email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return fmt.Errorf("failed to execute query: %v", err)
 	}
 
@@ -62,6 +64,7 @@ func (c *PostgresClient) GetNameAndLastname(email string) (string, string, error
 	fmt.Printf("Getting voter details by email: %v\n", email)
 	rows, err := c.db.Query("SELECT name, last_name FROM voters WHERE email = $1", email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return "", "", fmt.Errorf("failed to execute query: %v", err)
 	}
 	defer rows.Close()
@@ -71,6 +74,7 @@ func (c *PostgresClient) GetNameAndLastname(email string) (string, string, error
 	for rows.Next() {
 		err := rows.Scan(&name, &lastName)
 		if err != nil {
+			utils.Logger.Sugar().Errorf("failed to scan row: %v", err)
 			return "", "", fmt.Errorf("failed to scan row: %v", err)
 		}
 	}
@@ -87,6 +91,7 @@ func (c *PostgresClient) HasUserVoted(email string) (bool, error) {
 	fmt.Printf("Checking if user has voted: %v\n", email)
 	rows, err := c.db.Query("SELECT voter_fk FROM votes WHERE voter_fk = $1", email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return false, fmt.Errorf("failed to execute query: %v", err)
 	}
 	defer rows.Close()
@@ -95,6 +100,7 @@ func (c *PostgresClient) HasUserVoted(email string) (bool, error) {
 	for rows.Next() {
 		err := rows.Scan(&voter)
 		if err != nil {
+			utils.Logger.Sugar().Errorf("failed to scan row: %v", err)
 			return false, fmt.Errorf("failed to scan row: %v", err)
 		}
 	}
@@ -111,6 +117,7 @@ func (c *PostgresClient) PayForVotes(email string) error {
 	fmt.Printf("Paying for votes: %v\n", email)
 	_, err := c.db.Exec("UPDATE votes SET is_paid = true WHERE voter_fk = $1", email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return fmt.Errorf("failed to execute query: %v", err)
 	}
 
@@ -123,6 +130,7 @@ func (c *PostgresClient) HasUserPaid(email string) (bool, error) {
 	fmt.Printf("Checking if user has paid: %v\n", email)
 	rows, err := c.db.Query("SELECT is_paid FROM votes WHERE voter_fk = $1 AND is_paid = true", email)
 	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return false, fmt.Errorf("failed to execute query: %v", err)
 	}
 	defer rows.Close()
@@ -131,6 +139,7 @@ func (c *PostgresClient) HasUserPaid(email string) (bool, error) {
 	for rows.Next() {
 		err := rows.Scan(&isPaid)
 		if err != nil {
+			utils.Logger.Sugar().Errorf("failed to scan row: %v", err)
 			return false, fmt.Errorf("failed to scan row: %v", err)
 		}
 	}
