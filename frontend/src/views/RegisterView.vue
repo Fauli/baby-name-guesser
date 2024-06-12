@@ -102,7 +102,7 @@ const register = async () => {
       <label for="password">Event Password:</label>
       <input type="text" id="event_password" v-model="event_password" required>
       
-      <button @click="register">Register</button>
+      <button type="submit" @click="register">Register</button>
     </form>
   </div>
 
