@@ -84,5 +84,5 @@ func main() {
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// Start the server
-	router.Run(":8080")
+	router.Run("localhost:8080")
 }

@@ -19,10 +19,10 @@
     <section>
         <h2>How It Works:</h2>
         <ul>
-            <li>We’ve shortlisted some beautiful names for our baby. Your challenge is to guess the one we’ve chosen as first name.</li>
-            <li>Place your votes — each guess is CHF 10, and you can cast as many votes as you like to increase your chances of winning - but only once!</li>
+            <li>We’ve shortlisted some beautiful names for our baby. Your challenge is to guess the one we’ve chosen as <span style="font-weight: bold;">first name.</span></li>
+            <li>Place your votes — each guess is CHF 10, and you can cast as many guesses as you like to increase your chances of winning, but only once... so choose wisely!</li>
             <li>Every single Franken raised will go into a fund for our baby’s future, making each guess a gift to our child.</li>
-            <li>Get it right, and you’re in for a treat—a delicious three-course meal prepared by us!</li>
+            <li>Get it right, and you’re in for a treat — a delicious three-course meal prepared by us! The date of the meal will be arranged after her birth.</li>
         </ul>
     </section>
     <br />
@@ -30,7 +30,7 @@
         <h2>Important Rules:</h2>
         <ul>
             <li>Make your choice carefully; once your vote is cast and the payment is made through Twint, PayPal, or Revolut, there's no changing it.</li>
-            <li>Once you have voted, you will be able to see the overall top 3 votes.</li>
+            <li>Once you have voted, you will be able to see the overall top 3 guessed names.</li>
         </ul>
     </section>
     <br />

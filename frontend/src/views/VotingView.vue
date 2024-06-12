@@ -28,8 +28,6 @@ watchEffect(async () => {
   votedNames.value = await (await fetch(url)).json()
 })
 
-
-
 watchEffect(async () => {
   // this effect will run immediately and then
   // re-run whenever currentBranch.value changes
