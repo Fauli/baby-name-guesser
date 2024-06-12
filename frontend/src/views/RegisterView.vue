@@ -68,7 +68,7 @@ const register = async () => {
   </div>
   <div v-else>
     <h1>Register for the name game!</h1>
-    <p>You need the special password in order to register, ask Franz or Kathrin for it :).</p>
+    <p>You need the special password (Event password) in order to register, ask Franz or Kathrin for it :).</p>
     <br />
     <br />
 
