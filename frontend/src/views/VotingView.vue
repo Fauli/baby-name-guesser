@@ -88,7 +88,9 @@ function submitVote() {
   })
   .catch((error) => {
     console.error('Error:', error);
-    alert('Error submitting vote')
+    voteStatus.value = 'failure'
+    failureReason.value = error
+    alert('Error submitting vote: ' + error)
   });
 }
 

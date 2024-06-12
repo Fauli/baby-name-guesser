@@ -33,36 +33,6 @@ function handleNameSelection(name: string) {
   }
 }
 
-function submitVote() {
-  console.log('Submitting vote for', selectedNames.value)
-  var values = selectedNames.value
-  fetch('/api/votes/top', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      names: values
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Success:', data);
-    // if errorcode is not 200, show an alert
-    if (data.email.length = 0)
-    {
-      voteStatus.value = 'failure'
-      failureReason.value = data.message
-    } else {
-      voteStatus.value = 'success'
-    }
-    
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-    alert('Error submitting vote')
-  });
-}
 
 function getMedal(counter: number) {
   if (counter == 1) {
