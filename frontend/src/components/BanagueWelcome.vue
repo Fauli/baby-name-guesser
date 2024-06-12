@@ -39,7 +39,14 @@
         <p>Join us in this joyful prelude to our baby's arrival and possibly earn yourself a delightful dinner. Ready to play? Cast your vote and let the guessing begin!</p>
     </section>
 
-  
-
 
 </template>
+
+
+<style scoped>
+
+h2 {
+    padding-bottom: 3px;
+}
+
+</style>
