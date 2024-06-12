@@ -52,6 +52,25 @@ func (c *Controller) GetAllBabyNames(ctx *gin.Context) {
 func (c *Controller) AddBabyNames(ctx *gin.Context) {
 	utils.Logger.Debug("AddBabyNames called")
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can add names
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	var names []string
 
 	if err := ctx.BindJSON(&names); err != nil {
@@ -62,7 +81,7 @@ func (c *Controller) AddBabyNames(ctx *gin.Context) {
 		return
 	}
 
-	names, err := n.AddNames(names)
+	names, err = n.AddNames(names)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
@@ -92,10 +111,29 @@ func (c *Controller) AddBabyNames(ctx *gin.Context) {
 func (c *Controller) DeleteBabyName(ctx *gin.Context) {
 	utils.Logger.Debug("DeleteBabyName called")
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can delete names
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	name := ctx.Param("name")
 	utils.Logger.Sugar().Infof("Deleting name: %v\n", name)
 
-	err := n.DeleteName(name)
+	err = n.DeleteName(name)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
