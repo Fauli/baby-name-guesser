@@ -76,10 +76,6 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 	session.Values["last_name"] = lastName
 	session.Save(ctx.Request, ctx.Writer)
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Voter logged in successfully",
-	})
-
 	ctx.JSON(http.StatusOK, result)
 }
 
