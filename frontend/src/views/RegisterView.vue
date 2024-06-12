@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router';
 import { ref, watchEffect } from 'vue'
 
 const API_URL = `/api/names`
@@ -49,6 +50,10 @@ const register = async () => {
       // Registration successful
       console.log('Registration successful')
       registrationStatus.value = 'success'
+      router
+          .push({ path: '/voting' })
+          .then(() => { router.go(0) })
+
     } else {
       // Registration failed
       console.error('Registration failed')
