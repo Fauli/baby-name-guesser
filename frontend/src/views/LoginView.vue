@@ -68,6 +68,7 @@ const register = async () => {
   </div>
   <div v-else>
     <h1>Login for the name game!</h1>
+    <p>Enter your email and password to login, if you do not have a username and password yet, register first</p>
 
     <div v-if="loginStatus === 'success' || loginStatus === 'failure'">
       <div class="important">

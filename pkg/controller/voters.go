@@ -43,6 +43,43 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 		return
 	}
 
+	// TODO [franz] clean this up
+	login, err := v.LoginVoter(voter.Email, voter.Password)
+	if err != nil || !login {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "Logon failed",
+		})
+		return
+	}
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	name, lastName, err := v.GetNameAndLastname(voter.Email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+	session.Values["authenticated"] = true
+	session.Values["email"] = voter.Email
+	session.Values["name"] = name
+	session.Values["last_name"] = lastName
+	session.Save(ctx.Request, ctx.Writer)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Voter logged in successfully",
+	})
+
 	ctx.JSON(http.StatusOK, result)
 }
 

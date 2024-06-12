@@ -31,7 +31,7 @@
         <ul>
             <li>Make your choice carefully. Once your vote is cast and the payment is made through Twint, PayPal, or Revolut, there's no changing it.</li>
             <li>Once you have voted, you will be able to see the overall top 3 guessed names.</li>
-            <li>We already made the final decision on the name - so the game will not inflience our choice 😁</li>
+            <li>We already made the final decision on the name - so the game will not influence our choice 😁</li>
         </ul>
     </section>
     <br />
