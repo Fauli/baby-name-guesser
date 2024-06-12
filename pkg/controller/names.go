@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	n "sbebe.ch/baby-name-guesser/pkg/names"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 // GetAllBabyNames godoc
@@ -21,6 +21,7 @@ import (
 //	@Failure		500					{object}	HTTPError
 //	@Router			/names [get]
 func (c *Controller) GetAllBabyNames(ctx *gin.Context) {
+	utils.Logger.Debug("GetAllBabyNames called")
 	names, err := n.GetNames()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -49,8 +50,8 @@ func (c *Controller) GetAllBabyNames(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/names [post]
 func (c *Controller) AddBabyNames(ctx *gin.Context) {
+	utils.Logger.Debug("AddBabyNames called")
 
-	fmt.Println("AddBabyNames called")
 	var names []string
 
 	if err := ctx.BindJSON(&names); err != nil {
@@ -89,8 +90,11 @@ func (c *Controller) AddBabyNames(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/names/{name} [delete]
 func (c *Controller) DeleteBabyName(ctx *gin.Context) {
+	utils.Logger.Debug("DeleteBabyName called")
+
 	name := ctx.Param("name")
-	fmt.Printf("Deleting name: %v\n", name)
+	utils.Logger.Sugar().Infof("Deleting name: %v\n", name)
+
 	err := n.DeleteName(name)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{

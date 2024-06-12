@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 // GetAllBabyNames returns all baby names from the database ordered by alphabet.
@@ -29,7 +30,7 @@ func (c *PostgresClient) GetAllBabyNames() ([]string, error) {
 
 // AddBabyName adds a baby name to the database.
 func (c *PostgresClient) AddBabyName(name string) error {
-	fmt.Printf("Adding name to DB: %v\n", name)
+	utils.Logger.Sugar().Infof("Adding name to DB: %v\n", name)
 	_, err := c.db.Exec("INSERT INTO names (name) VALUES ($1)", name)
 	if err != nil {
 		return fmt.Errorf("failed to execute query: %v", err)
@@ -40,7 +41,7 @@ func (c *PostgresClient) AddBabyName(name string) error {
 
 // AddBabyNames adds a list of baby names to the database.
 func (c *PostgresClient) AddBabyNames(names []string) error {
-	fmt.Printf("Adding names to DB: %v\n", names)
+	utils.Logger.Sugar().Infof("Adding names to DB: %v\n", names)
 	for _, name := range names {
 		err := c.AddBabyName(name)
 		if err != nil {
@@ -53,7 +54,7 @@ func (c *PostgresClient) AddBabyNames(names []string) error {
 
 // DeleteBabyName deletes a baby name from the database.
 func (c *PostgresClient) DeleteBabyName(name string) error {
-	fmt.Printf("Deleting name from DB: %v\n", name)
+	utils.Logger.Sugar().Infof("Deleting name from DB: %v\n", name)
 	_, err := c.db.Exec("DELETE FROM names WHERE name = $1", name)
 	if err != nil {
 		return fmt.Errorf("failed to execute query: %v", err)

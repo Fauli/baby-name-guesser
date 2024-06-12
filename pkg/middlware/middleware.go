@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -14,15 +13,7 @@ import (
 // If not, it will return a 401 unauthorized error.
 func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		if utils.IsDebug() {
-			fmt.Println("--------------------")
-			fmt.Printf("URL: %s\n", c.Request.URL)
-			fmt.Printf("METHOD: %s\n", c.Request.Method)
-			fmt.Printf("HEADER: %s\n", c.Request.Header)
-			fmt.Printf("BODY: %s\n", c.Request.Body)
-			fmt.Println("--------------------")
-		}
+		utils.Logger.Sugar().Debugf("URL: [%s], METHOD: [%s], HEADER: [%s], BODY: [%s]", c.Request.URL, c.Request.Method, c.Request.Header, c.Request.Body)
 
 		if !strings.EqualFold(c.Request.URL.Path, "/api/voters/login") &&
 			!strings.EqualFold(c.Request.URL.Path, "/api/voters") &&
@@ -31,13 +22,13 @@ func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 			session, _ := store.Get(c.Request, "session")
 			if session.Values["authenticated"] != true {
 				c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
-				fmt.Println("Unauthorized access")
+				utils.Logger.Warn("Unauthorized access")
 				c.Abort()
 			} else {
 				user := session.Values["email"]
 				name := session.Values["name"]
 				lastName := session.Values["last_name"]
-				fmt.Printf("Session is valid by user: %s %s [%s]\n", name, lastName, user)
+				utils.Logger.Sugar().Debugf("Session is valid by user: %s %s [%s]", name, lastName, user)
 				c.Next()
 			}
 		}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"sbebe.ch/baby-name-guesser/pkg/payment"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 	"sbebe.ch/baby-name-guesser/pkg/voters"
 )
 
@@ -75,6 +76,7 @@ func (c *Controller) PayForVotes(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/payments/{email}  [get]
 func (c *Controller) HasUserPaid(ctx *gin.Context) {
+	utils.Logger.Debug("HasUserPaid called")
 
 	voter := ctx.Param("email")
 

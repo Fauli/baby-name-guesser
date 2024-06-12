@@ -21,7 +21,11 @@ var (
 )
 
 func main() {
+	utils.ShowSplashScreen()
 	utils.PrintAllConfig()
+	utils.InitializeLogger()
+	utils.Logger.Debug("Starting the server...")
+
 	docs.SwaggerInfo.BasePath = basePath
 
 	// Create a new Gin router
@@ -45,7 +49,8 @@ func main() {
 	// 	MaxAge:           12 * time.Hour,
 	// }))
 
-	router.Static("/game/", "./frontend/dist")
+	utils.Logger.Sugar().Debugf("UI is available under %s", utils.GetUIPath())
+	router.Static(utils.GetUIPath(), "./frontend/dist")
 
 	// validate if users are logged in
 	router.Use(middleware.ValidateSession(store))

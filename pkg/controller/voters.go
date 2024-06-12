@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 	v "sbebe.ch/baby-name-guesser/pkg/voters"
 )
 
@@ -22,8 +22,8 @@ import (
 //	@Failure		500					{object}	HTTPError
 //	@Router			/voters [post]
 func (c *Controller) AddNewVoter(ctx *gin.Context) {
+	utils.Logger.Debug("AddNewVoter called")
 
-	fmt.Println("Adding a new voter")
 	var voter v.VoterFull
 	voter.HasVoted = false
 
@@ -60,6 +60,8 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/voters/{email} [get]
 func (c *Controller) GetVoter(ctx *gin.Context) {
+	utils.Logger.Debug("GetVoter called")
+
 	email := ctx.Param("email")
 	voter, err := v.GetVoterByEmail(email)
 	if err != nil {
@@ -86,6 +88,8 @@ func (c *Controller) GetVoter(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/voters/{email} [delete]
 func (c *Controller) DeleteVoter(ctx *gin.Context) {
+	utils.Logger.Debug("DeleteVoter called")
+
 	email := ctx.Param("email")
 	err := v.DeleteVoterByEmail(email)
 	if err != nil {
@@ -114,6 +118,8 @@ func (c *Controller) DeleteVoter(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/voters/login [post]
 func (c *Controller) LoginVoter(ctx *gin.Context) {
+	utils.Logger.Debug("LoginVoter called")
+
 	var voter v.VoterLogin
 	if err := ctx.BindJSON(&voter); err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -171,6 +177,8 @@ func (c *Controller) LoginVoter(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/voters/logout [post]
 func (c *Controller) LogoutVoter(ctx *gin.Context) {
+	utils.Logger.Debug("LogoutVoter called")
+
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -181,7 +189,7 @@ func (c *Controller) LogoutVoter(ctx *gin.Context) {
 	}
 
 	user := session.Values["email"]
-	fmt.Printf("Logging out user %s\n", user)
+	utils.Logger.Sugar().Info("Logging out user %s\n", user)
 
 	session.Values["authenticated"] = false
 	session.Values["email"] = ""
@@ -191,5 +199,3 @@ func (c *Controller) LogoutVoter(ctx *gin.Context) {
 		Message: "Voter logged out successfully",
 	})
 }
-
-

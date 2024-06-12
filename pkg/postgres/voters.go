@@ -2,11 +2,13 @@ package postgres
 
 import (
 	"fmt"
+
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 // Add Voter inserts a single voter entry into the voters table
 func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error {
-	fmt.Printf("Adding voter to DB: %v\n", email)
+	utils.Logger.Sugar().Infof("Adding voter to DB: %v\n", email)
 	_, err := c.db.Exec("INSERT INTO voters (name, last_name, email, password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf')))",
 		name, lastName, email, passwort)
 	if err != nil {
@@ -18,7 +20,7 @@ func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error 
 
 // DeleteVoter deletes a single voter entry from the voters table
 func (c *PostgresClient) DeleteVoter(email string) error {
-	fmt.Printf("Deleting voter from DB: %v\n", email)
+	utils.Logger.Sugar().Infof("Deleting voter from DB: %v\n", email)
 	_, err := c.db.Exec("DELETE FROM voters WHERE email = $1", email)
 	if err != nil {
 		return fmt.Errorf("failed to execute query: %v", err)
@@ -29,10 +31,11 @@ func (c *PostgresClient) DeleteVoter(email string) error {
 
 // LoginVoter compares the email address and passwort with the one in the database
 func (c *PostgresClient) LoginVoter(email, passwort string) (bool, error) {
-	fmt.Printf("Logging in voter: %v\n", email)
+	utils.Logger.Sugar().Infof("Logging in voter: %v\n", email)
 	//                     select email from voters where email = 'a' and password = crypt('b', password)
 	rows, err := c.db.Query("SELECT email FROM voters WHERE email = $1 AND password = crypt($2, password)", email, passwort)
 	if err != nil {
+		utils.Logger.Sugar().Warnf("failed to execute query: %v\n", err)
 		return false, fmt.Errorf("failed to execute query: %v", err)
 	}
 
@@ -40,16 +43,17 @@ func (c *PostgresClient) LoginVoter(email, passwort string) (bool, error) {
 	for rows.Next() {
 		err := rows.Scan(&name)
 		if err != nil {
+			utils.Logger.Sugar().Warnf("Login failed: %v\n", email)
 			return false, fmt.Errorf("failed to scan row: %v", err)
 		}
 	}
 
 	if name == "" {
+		utils.Logger.Sugar().Warnf("Login failed: %v\n", email)
 		return false, fmt.Errorf("login failed")
 	}
 
-	fmt.Println("Login successful")
-	fmt.Println(name)
+	utils.Logger.Sugar().Infof("Login successful: %v\n", email)
 	return true, nil
 }
 

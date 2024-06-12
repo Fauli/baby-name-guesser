@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 	v "sbebe.ch/baby-name-guesser/pkg/voters"
 )
 
@@ -20,6 +21,7 @@ import (
 //	@Failure		500					{object}	HTTPError
 //	@Router			/me [get]
 func (c *Controller) GetUserInformation(ctx *gin.Context) {
+	utils.Logger.Debug("GetUserInformation called")
 
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {

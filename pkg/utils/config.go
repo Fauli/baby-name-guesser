@@ -45,6 +45,10 @@ func IsDebug() bool {
 	return GetEnv("BANAGUE_DEBUG", "false") == "true"
 }
 
+func GetUIPath() string {
+	return GetEnv("UI_PATH", "/game/")
+}
+
 // GetEnv returns the value of an environment variable or a fallback value if the variable is not set.
 func GetEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
@@ -62,4 +66,5 @@ func PrintAllConfig() {
 	fmt.Printf("PAYPAL: %s\n", GetPaypal())
 	fmt.Printf("SESSION_KEY: %s\n", GetSessionKey())
 	fmt.Printf("BANAGUE_DEBUG: %t\n", IsDebug())
+	fmt.Printf("UI_PATH: %s\n", GetUIPath())
 }

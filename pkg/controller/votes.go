@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,8 +24,8 @@ import (
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes [post]
 func (c *Controller) AddVotes(ctx *gin.Context) {
+	utils.Logger.Debug("AddVotes called")
 
-	fmt.Println("Adding a new vote")
 	var votedNames n.Names
 
 	if err := ctx.BindJSON(&votedNames); err != nil {
@@ -46,7 +45,7 @@ func (c *Controller) AddVotes(ctx *gin.Context) {
 	}
 
 	email := session.Values["email"]
-	fmt.Printf("Adding votes for %s\n", email)
+	utils.Logger.Sugar().Infof("Adding votes for %s", email)
 	result, err := v.AddVotes(session.Values["email"].(string), votedNames.Names)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
@@ -72,6 +71,7 @@ func (c *Controller) AddVotes(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes [get]
 func (c *Controller) GetAllVotes(ctx *gin.Context) {
+	utils.Logger.Debug("GetAllVotes called")
 
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {
@@ -117,6 +117,7 @@ func (c *Controller) GetAllVotes(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes/me [get]
 func (c *Controller) GetPersonalVotes(ctx *gin.Context) {
+	utils.Logger.Debug("GetPersonalVotes called")
 
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {
@@ -154,6 +155,7 @@ func (c *Controller) GetPersonalVotes(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes/voters [get]
 func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
+	utils.Logger.Debug("GetVotesPerVoters called")
 
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {
@@ -199,6 +201,7 @@ func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
 //	@Failure		500					{object}	HTTPError
 //	@Router			/votes/top [get]
 func (c *Controller) GetTopVotes(ctx *gin.Context) {
+	utils.Logger.Debug("GetTopVotes called")
 
 	session, err := c.Store.Get(ctx.Request, "session")
 	if err != nil {

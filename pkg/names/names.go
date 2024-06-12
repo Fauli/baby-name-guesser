@@ -1,9 +1,8 @@
 package names
 
 import (
-	"fmt"
-
 	"sbebe.ch/baby-name-guesser/pkg/postgres"
+	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
 type Names struct {
@@ -22,7 +21,7 @@ func GetNames() ([]string, error) {
 
 // GetNames returns a list of names.
 func AddNames(names []string) ([]string, error) {
-	fmt.Println("adding names")
+	utils.Logger.Sugar().Infof("Adding names: %v", names)
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return nil, err
@@ -37,7 +36,7 @@ func AddNames(names []string) ([]string, error) {
 
 // DeleteName deletes a name from the list.
 func DeleteName(name string) error {
-	fmt.Printf("Deleting name: %v\n", name)
+	utils.Logger.Sugar().Infof("Deleting name: %v\n", name)
 	c, err := postgres.NewPostgresClient()
 	if err != nil {
 		return err
