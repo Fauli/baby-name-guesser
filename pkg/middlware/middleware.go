@@ -22,7 +22,7 @@ func ValidateSession(store *sessions.CookieStore) gin.HandlerFunc {
 			session, _ := store.Get(c.Request, "session")
 			if session.Values["authenticated"] != true {
 				c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
-				utils.Logger.Warn("Unauthorized access")
+				utils.Logger.Info("Unauthorized access")
 				c.Abort()
 			} else {
 				user := session.Values["email"]
