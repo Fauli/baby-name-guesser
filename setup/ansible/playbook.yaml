@@ -1,0 +1,50 @@
+- name: Install BaNaGue
+  hosts: myhosts
+  tasks:
+    #- name: Print message
+    #  ansible.builtin.debug:
+    #    msg: Hello world
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+    - name: Open firewall
+      ansible.builtin.shell: ufw allow 'Nginx HTTP'
+    - name: Install postgres
+      apt:
+        name: postgresql
+        state: present
+    - name: Install git
+      apt:
+        name: git
+        state: present
+    - name: Git checkout of banague repo
+      ansible.builtin.git:
+        repo: "https://github.com/Fauli/baby-name-guesser.git"
+        dest: /home/banague/baby-name-guesser-2
+        update: yes
+    - name: Create config directory
+      ansible.builtin.file:
+        path: /etc/banague
+        state: directory
+    - name: Copy system.service file from repo
+      ansible.builtin.copy:
+        src: /home/banague/baby-name-guesser-2/setup/banague.service
+        dest: /etc/systemd/system/banague.service
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Copy environemnt.conf template file
+      ansible.builtin.copy:
+        src: /home/banague/baby-name-guesser-2/setup/banague.service
+        dest: /etc/systemd/system/banague.service
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Start banague service
+      systemd:
+        name: banague
+        state: started
+        enabled: yes
+    - name: Run SQL on postgres
+      ansible.builtin.shell: psql -U postgres -f /home/banague/baby-name-guesser-2/setup/banague.sql

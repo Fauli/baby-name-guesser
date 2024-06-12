@@ -1,0 +1,17 @@
+[Unit]
+Description=Baby Name Guesser
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=banague
+Group=banague
+ExecStart=/home/banague/baby-name-guesser/baby-name-guesser
+WorkingDirectory=/home/banague/baby-name-guesser
+EnvironmentFile=/etc/banague/environment.conf
+
+[Install]
+WantedBy=multi-user.target
