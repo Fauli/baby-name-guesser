@@ -144,6 +144,7 @@ function submitVote() {
       <p>Select all your guesses, but choose wisely. You can only guess once!</p>
       <p>There are <b>{{ names.names.length }}</b> available names to choose from.</p>
       <p>The vote only really counts once you transferred the matching sum</p>
+      <p>You will get the payment information after you placed your votes</p>
       <hr>
       <ul>
         <p v-for="item in names.names" :key="item.value">
