@@ -28,7 +28,7 @@ sudo apt install ansible
     cd baby-name-guesser
     ```
 
-3. Install the dependencies:
+3. Run the ansible playbook:
 
     ```bash
     npm install
@@ -36,7 +36,7 @@ sudo apt install ansible
 
 4. Configure the environment variables:
 
-    - Create a `.env` file in the project root directory.
+    - In /etc/banague/environment.conf 
     - Add the following environment variables and provide the necessary values:
 
       ```plaintext

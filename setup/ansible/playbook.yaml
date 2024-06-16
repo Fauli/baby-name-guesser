@@ -1,6 +1,12 @@
 - name: Install BaNaGue
+  vars:
+    username: banague
+    installPath: "/home/{{ username }}/baby-name-guesser"
   hosts: myhosts
   tasks:
+    - name: print variables
+      debug:
+        msg: "Username: {{ username }}, Install path: {{ installPath }}"
     #- name: Print message
     #  ansible.builtin.debug:
     #    msg: Hello world
@@ -18,25 +24,41 @@
       apt:
         name: git
         state: present
+    - name: Create banague user
+      ansible.builtin.user:
+        name: banague
+        state: present
+        shell: /bin/bash
+        home: /home/banague
+    - name: Install certbot
+      apt:
+        name: certbot
+        state: present
+    - name: Install python-certbot-nginx
+      apt:
+        name: python-certbot-nginx
+        state: present
     - name: Git checkout of banague repo
       ansible.builtin.git:
         repo: "https://github.com/Fauli/baby-name-guesser.git"
-        dest: /home/banague/baby-name-guesser-2
+        dest: "{{installPath}}"
         update: yes
+        become: yes
+        become_user: "{{ username }}"
     - name: Create config directory
       ansible.builtin.file:
         path: /etc/banague
         state: directory
     - name: Copy system.service file from repo
       ansible.builtin.copy:
-        src: /home/banague/baby-name-guesser-2/setup/banague.service
+        src: "{{installPath}}/setup/banague.service"
         dest: /etc/systemd/system/banague.service
         owner: root
         group: root
         mode: "0644"
     - name: Copy environemnt.conf template file
       ansible.builtin.copy:
-        src: /home/banague/baby-name-guesser-2/setup/banague.service
+        src: "{{installPath}}/setup/banague.service"
         dest: /etc/systemd/system/banague.service
         owner: root
         group: root
@@ -47,4 +69,6 @@
         state: started
         enabled: yes
     - name: Run SQL on postgres
-      ansible.builtin.shell: psql -U postgres -f /home/banague/baby-name-guesser-2/setup/banague.sql
+      ansible.builtin.shell: "psql -U postgres -f {{installPath}}/setup/banague.sql"
+      become: yes
+      become_user: postgres
