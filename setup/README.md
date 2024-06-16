@@ -37,27 +37,15 @@ sudo apt install ansible
 4. Configure the environment variables:
 
     - In /etc/banague/environment.conf 
-    - Add the following environment variables and provide the necessary values:
-
-      ```plaintext
-      PORT=3000
-      MONGODB_URI=mongodb://localhost:27017/baby-name-guesser
-      ```
+    - Adapt the environemnt variables to your needs:
 
 5. Start the application:
 
     ```bash
-    npm start
+    systemctl start banague.service
     ```
 
 ## Usage
 
-Once the application is set up and running, you can access it by navigating to `http://localhost:3000` in your web browser.
+Once the application is set up and running, you can access it by navigating to `http://localhost:8080/game` in your web browser.
 
-## Contributing
-
-If you would like to contribute to the Baby Name Guesser application, please follow the guidelines outlined in the [CONTRIBUTING.md](link-to-contributing-file) file.
-
-## License
-
-This project is licensed under the [MIT License](link-to-license-file).
