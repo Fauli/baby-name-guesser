@@ -31,7 +31,7 @@ sudo apt install ansible
 3. Run the ansible playbook:
 
     ```bash
-    npm install
+    ansible-playbook -i inventory.ini playbook.yaml
     ```
 
 4. Configure the environment variables:
