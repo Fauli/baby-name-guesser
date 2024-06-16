@@ -129,6 +129,10 @@ function submitVote() {
           <td class="label">Paypal</td>
           <td class="value">{{ paymentInfo.paypal }}</td>
         </tr>
+        <tr>
+          <td class="label">Important</td>
+          <td class="value">Add your name to the payment</td>
+        </tr>
       </table>
       <br />
       <p>Thank you for participating in the name game!</p>
