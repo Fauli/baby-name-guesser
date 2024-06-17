@@ -91,9 +91,11 @@ function register() {
           <p>
             Registration successful!
           </p>
+          <p>You will be redirected shortly...</p>
         </div>
         <div v-if="registrationStatus === 'failure'" class="important-content red">
           <p>Registration failed!</p>
+          <p>{{ registrationMessage }}</p>
         </div>
       </div>
     </div>
