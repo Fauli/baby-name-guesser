@@ -159,21 +159,6 @@ a {
   /* color: #42b883; */
 }
 
-.author,
-.date {
-  font-weight: bold;
-}
-
-
-a {
-  text-decoration: none;
-  /* color: #42b883; */
-}
-.author,
-.date {
-  font-weight: bold;
-}
-
 form {
   display: flex;
   flex-direction: column;

@@ -72,6 +72,7 @@ function login() {
   <div v-else>
     <h1>Login for the name game!</h1>
     <p>Enter your email and password to login, if you do not have a username and password yet, register first</p>
+    <br />
 
     <div v-if="loginStatus === 'success' || loginStatus === 'failure'">
       <div class="important">
@@ -134,26 +135,9 @@ function login() {
   font-weight: bold;
 }
 
-
 a {
   text-decoration: none;
   /* color: #42b883; */
-}
-
-.author,
-.date {
-  font-weight: bold;
-}
-
-
-a {
-  text-decoration: none;
-  /* color: #42b883; */
-}
-
-.author,
-.date {
-  font-weight: bold;
 }
 
 form {
