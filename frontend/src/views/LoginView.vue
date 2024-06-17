@@ -18,45 +18,48 @@ const email = ref('')
 const password = ref('')
 
 var loginStatus = ref('')
+var failureReason = ref('')
 
 watchEffect(() => {
   loginStatus.value = ''
 })
 
-const register = async () => {
+function login() {
   const voter = {
     email: email.value,
     password: password.value
   }
 
-  try {
-    const response = await fetch('/api/voters/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(voter)
-    })
-
-
-
-    if (response.ok) {
-      // Registration successful
-      console.log('Login successful')
-      loginStatus.value = 'success'
-      // router.push('/voting')
-      router
+  fetch('/api/voters/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(voter)
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      // if something failed, no mail is returned
+      if (!data.email) {
+        console.log('Login failed')
+        loginStatus.value = 'failure'
+        failureReason.value = data.message
+      } else {
+        console.log('Login successful')
+        loginStatus.value = 'success'
+        router
           .push({ path: '/voting' })
           .then(() => { router.go(0) })
-      // location.reload()
-    } else {
-      // Registration failed
-      console.error('Login failed')
+      }
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
       loginStatus.value = 'failure'
-    }
-  } catch (error) {
-    console.error('Error:', error)
-  }
+      failureReason.value = error
+      alert('Error submitting vote: ' + error)
+    });
 }
 
 </script>
@@ -79,6 +82,7 @@ const register = async () => {
         </div>
         <div v-if="loginStatus === 'failure'" class="important-content red">
           <p>Login failed!</p>
+          <p>Details: {{ failureReason }}</p>
         </div>
       </div>
     </div>
@@ -93,7 +97,7 @@ const register = async () => {
       <label for="password">Password:</label>
       <input type="password" id="password" v-model="password" required>
 
-      <button type="submit" @click="register">Login</button>
+      <button type="submit" @click="login">Login</button>
     </form>
   </div>
 
