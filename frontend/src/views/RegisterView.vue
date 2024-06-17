@@ -21,12 +21,14 @@ const password = ref('')
 const event_password = ref('')
 
 var registrationStatus = ref('')
+var registrationMessage = ref('')
 
 watchEffect(() => {
   registrationStatus.value = ''
 })
 
-const register = async () => {
+function register() {
+  console.log('Registering voter...')
   const voter = {
     name: name.value,
     last_name: lastname.value,
@@ -35,33 +37,39 @@ const register = async () => {
     event_password: event_password.value
   }
 
-  try {
-    const response = await fetch('/api/voters', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(voter)
-    })
-
-
-
-    if (response.ok) {
-      // Registration successful
-      console.log('Registration successful')
-      registrationStatus.value = 'success'
-      router
+  fetch('/api/voters', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(voter)
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.email) {
+        // Registration successful
+        console.log('Registration successful')
+        registrationStatus.value = 'success'
+        router
           .push({ path: '/voting' })
           .then(() => { router.go(0) })
 
-    } else {
-      // Registration failed
-      console.error('Registration failed')
+      } else {
+        // Registration failed
+        console.error('Registration failed')
+        registrationStatus.value = 'failure'
+        registrationMessage.value = 'Registration failed, please validate if all information are correct. Details: ' + data.message
+      }
+
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
       registrationStatus.value = 'failure'
-    }
-  } catch (error) {
-    console.error('Error:', error)
-  }
+      registrationMessage.value = error
+      alert('Error submitting vote: ' + error)
+    });
+
 }
 
 </script>
