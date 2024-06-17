@@ -68,10 +68,10 @@ const toggleVisibility = () => {
         </section>
         <br />
         <section>
-            <p>Aufregende Zeiten stehen bevor, da wir uns darauf vorbereiten, unser neuestes Familienmitglied willkommen
-                zu heissen! 🐣<br />
-                Aber bevor wir den grossen Namen enthüllen, laden wir dich ein, an einer lustigen 
-                Herausforderung teilzunehmen: <span style="font-weight: bold;">Rate den Namen unseres
+            <p>Aufregende Zeiten kommen auf uns zu und wir bereiten uns darauf vor, unser neuestes Familienmitglied
+                willkommen zu heissen! 🐣<br />
+                Aber bevor wir das grosse Namensgeheimnis lüften, laden wir dich ein, an einer lustigen Herausforderung
+                teilzunehmen: <span style="font-weight: bold;">Rate den Namen unseres
                     Babys!</span><br />
                 Mach mit, hab Spass und trage gleichzeitig zur Zukunft unserer Kleinen bei. 💙</p>
         </section>
@@ -79,33 +79,33 @@ const toggleVisibility = () => {
         <section>
             <h2>Wie es funktioniert</h2>
             <ul>
-                <li>Wir haben einige schöne Namen für unser Baby ausgewählt. Deine Herausforderung besteht darin, den
-                    Namen zu erraten, den wir als <span style="font-weight: bold;">Vornamen</span> gewählt haben.</li>
+                <li>Wir haben einige schöne Namen für unser Baby zusammengetragen. Deine Herausforderung besteht darin,
+                    den Namen zu erraten, den wir als <span style="font-weight: bold;">ersten Vornamen</span> gewählt
+                    haben.</li>
                 <li>Gib deine Stimmen ab — jeder Tipp kostet CHF 10, und du kannst so viele Tipps abgeben, wie du
                     möchtest, um deine Gewinnchancen zu erhöhen, aber nur einmal... also wähle weise!</li>
-                <li>Jeder einzelne Franken, der gesammelt wird, fliesst in einen Fond für die Zukunft unseres Babys,
+                <li>Jeder einzelne Franken, der gesammelt wird, fliesst in einen Fonds für die Zukunft unseres Babys,
                     sodass jeder Tipp ein Geschenk für unser Kind ist.</li>
-                <li>Errätst du richtig, erwartet dich eine Belohnung — ein köstliches Drei-Gänge-Menü 🍲, das von
-                    uns zubereitet wird! Der Termin für das Essen wird nach ihrer Geburt arrangiert.</li>
+                <li>Errätst du richtig, erwartet dich eine Belohnung — ein exklusives Drei-Gang-Menü 🍲, das von uns
+                    zubereitet wird! Der Termin für das Essen wird nach der Geburt vereinbart.</li>
             </ul>
         </section>
         <br />
         <section>
             <h2>Wichtige Regeln</h2>
             <ul>
-                <li>Treffe deine Wahl sorgfältig. Sobald deine Stimme abgegeben und die Zahlung über Twint, PayPal
-                    oder Revolut erfolgt ist, gibt es kein Zurück mehr.</li>
-                <li>Nachdem du abgestimmt hast, kannst du die drei am häufigsten erratenen Namen insgesamt sehen.
-                </li>
-                <li>Wir haben die endgültige Entscheidung über den Namen bereits getroffen - das Spiel wird unsere Wahl
-                    also nicht beeinflussen 😁</li>
+                <li>Treffe deine Wahl sorgfältig. Sobald deine Stimme abgegeben ist, gibt es kein Zurück mehr.</li>
+                <li>Bezahle deinen Einsatz via Twint, PayPal oder Revolut gemäss Angaben auf der Webseite, damit deine
+                    Wahl auch vollständig gültig wird.</li>
+                <li>Nachdem du abgestimmt hast, kannst du die drei am häufigsten gewählten Namen ansehen.</li>
+                <li>Wir haben unsere Entscheidung bereits getroffen - das Spiel wird unsere Namenswahl also nicht
+                    beeinflussen😁</li>
             </ul>
         </section>
         <br />
         <section>
-            <p>Schliesse dich uns in dieser freudigen Einleitung zur Ankunft unseres Babys an und verdiene dir
-                möglicherweise ein köstliches Abendessen. Bereit zum Spielen? Gib deine Stimme ab und lass
-                das Raten beginnen!</p>
+            <p>Schliesse dich unserer freudigen Erwartung an und versuche dein Glück für ein exklusives Essen bei uns.
+                Bereit zum Spielen? Registriere dich jetzt und lass das Raten beginnen!</p>
         </section>
     </div>
 
