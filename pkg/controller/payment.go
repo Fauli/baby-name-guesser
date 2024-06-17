@@ -28,8 +28,6 @@ func (c *Controller) GetPayment(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, payment)
 }
 
-// TODO: [franz] refactor this to /payments/{email}
-
 // GetTopVotes godoc
 //
 //	@Summary		Set the payment status for the voter to true

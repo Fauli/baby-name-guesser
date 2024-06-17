@@ -6,8 +6,6 @@ const API_URL = `/api`
 
 const userInfo: any = ref('')
 
-// TODO: Maybe check https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/
-
 watchEffect(async () => {
   // this effect will run immediately and then
   // re-run whenever currentBranch.value changes

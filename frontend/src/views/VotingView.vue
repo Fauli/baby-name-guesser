@@ -12,8 +12,6 @@ const userInfo: any = ref('')
 const paymentInfo: any = ref('')
 const votedNames: any = ref<string[]>([])
 
-// TODO: Maybe check https://auth0.com/blog/beginner-vuejs-tutorial-with-user-login/
-
 watchEffect(async () => {
   // this effect will run immediately and then
   // re-run whenever currentBranch.value changes
@@ -167,7 +165,6 @@ function submitVote() {
             <p>Voting successful!</p>
           </div>
           <div v-if="voteStatus === 'failure'" class="important-content red">
-            <!-- TODO: [franz] Add reason why voting has failed here! -->
             <p>Voting has failed!</p>
             <p>Reason: {{ failureReason }}</p>
           </div>

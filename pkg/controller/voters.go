@@ -48,7 +48,7 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 	if err != nil || !login {
 		ctx.JSON(http.StatusForbidden, HTTPError{
 			Code:    http.StatusForbidden,
-			Message: "Logon failed",
+			Message: "Login failed",
 		})
 		return
 	}
@@ -164,7 +164,7 @@ func (c *Controller) LoginVoter(ctx *gin.Context) {
 	if err != nil || !result {
 		ctx.JSON(http.StatusForbidden, HTTPError{
 			Code:    http.StatusForbidden,
-			Message: "Logon failed",
+			Message: "Login failed",
 		})
 		return
 	}
