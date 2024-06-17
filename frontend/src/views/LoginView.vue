@@ -41,7 +41,7 @@ function login() {
     .then(data => {
       console.log('Success:', data);
       // if something failed, no mail is returned
-      if (!data.email) {
+      if (data.message != "Voter logged in successfully") {
         console.log('Login failed')
         loginStatus.value = 'failure'
         failureReason.value = data.message
