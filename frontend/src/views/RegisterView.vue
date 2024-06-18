@@ -111,13 +111,13 @@ function register() {
       <label for="email">Your Email (will also be your username):</label>
       <input type="email" id="email" v-model="email" required>
       
-      <label for="password">Your Password:</label>
+      <label for="password">Your Password (min 8 characters):</label>
       <input type="password" id="password" v-model="password" required minlength="8">
 
       <label for="password">Event Password:</label>
       <input type="text" id="event_password" v-model="event_password" required>
       
-      <button type="submit" @click="register">Register</button>
+      <button type="button" @click="register">Register</button>
     </form>
   </div>
 

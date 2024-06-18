@@ -98,7 +98,7 @@ function login() {
       <label for="password">Password:</label>
       <input type="password" id="password" v-model="password" required>
 
-      <button type="submit" @click="login">Login</button>
+      <button type="button" @click="login">Login</button>
     </form>
   </div>
 
