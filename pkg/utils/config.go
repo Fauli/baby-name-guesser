@@ -14,6 +14,7 @@ const (
 	sessionKey    = "secret-session-key-1337!"
 	uiPath        = "/game/"
 	serverAndPort = "localhost:8080"
+	IBAN          = "CH1234567890123456789"
 )
 
 // GetAdminEmail returns the email address of the admin.
@@ -37,6 +38,10 @@ func GetMobile() string {
 
 func GetPaypal() string {
 	return GetEnv("PAYPAL", paypal)
+}
+
+func GetIBAN() string {
+	return GetEnv("IBAN", IBAN)
 }
 
 func GetSessionKey() string {
