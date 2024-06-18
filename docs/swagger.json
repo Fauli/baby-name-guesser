@@ -844,6 +844,9 @@
         "payment.Payment": {
             "type": "object",
             "properties": {
+                "iban": {
+                    "type": "string"
+                },
                 "paypal": {
                     "type": "string"
                 },
@@ -860,6 +863,9 @@
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "has_paid": {
+                    "type": "boolean"
                 },
                 "has_voted": {
                     "type": "boolean"
@@ -880,6 +886,9 @@
                 },
                 "event_password": {
                     "type": "string"
+                },
+                "has_paid": {
+                    "type": "boolean"
                 },
                 "has_voted": {
                     "type": "boolean"

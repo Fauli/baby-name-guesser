@@ -23,6 +23,8 @@ definitions:
     type: object
   payment.Payment:
     properties:
+      iban:
+        type: string
       paypal:
         type: string
       revolut:
@@ -34,6 +36,8 @@ definitions:
     properties:
       email:
         type: string
+      has_paid:
+        type: boolean
       has_voted:
         type: boolean
       last_name:
@@ -47,6 +51,8 @@ definitions:
         type: string
       event_password:
         type: string
+      has_paid:
+        type: boolean
       has_voted:
         type: boolean
       last_name:

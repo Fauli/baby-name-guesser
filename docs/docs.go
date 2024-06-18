@@ -855,6 +855,9 @@ const docTemplate = `{
         "payment.Payment": {
             "type": "object",
             "properties": {
+                "iban": {
+                    "type": "string"
+                },
                 "paypal": {
                     "type": "string"
                 },
@@ -871,6 +874,9 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "has_paid": {
+                    "type": "boolean"
                 },
                 "has_voted": {
                     "type": "boolean"
@@ -891,6 +897,9 @@ const docTemplate = `{
                 },
                 "event_password": {
                     "type": "string"
+                },
+                "has_paid": {
+                    "type": "boolean"
                 },
                 "has_voted": {
                     "type": "boolean"

@@ -12,6 +12,7 @@ type Voter struct {
 	LastName string `json:"last_name"`
 	Email    string `json:"email"`
 	HasVoted bool   `json:"has_voted"`
+	HasPaid  bool   `json:"has_paid"`
 }
 
 type VoterFull struct {

@@ -136,6 +136,9 @@ function submitVote() {
         </tr>
       </table>
       <br />
+      <p v-if="!userInfo.has_paid">👉 <span style="text-decoration: underline;">Sometime after you have transferred the money, you will see a confirmation message on this site.</span> 👈</p>
+      <p v-else>🎉<span class="rainbow-text" style="font-size: larger; font-weight: bold; text-decoration: underline;">Your money was recieved and you are officially taking part in the game! Woohoo!</span>🎉</p>
+      <br />
       <p>Thank you for participating in the name game!</p>
       <p>We will be sending out the results after the 20.08.2024 🥰</p>
       <br />
@@ -251,9 +254,13 @@ a {
   /* color: #42b883; */
 }
 
-.author,
-.date {
-  font-weight: bold;
+
+.rainbow-text {
+  background-image: linear-gradient(to left, violet, indigo, blue, green, orange, red);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 

@@ -53,5 +53,14 @@ func (c *Controller) GetUserInformation(ctx *gin.Context) {
 	}
 	voter.HasVoted = hasVoted
 
+	voter.HasPaid, err = v.HasUserPaid(email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, voter)
 }
