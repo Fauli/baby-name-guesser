@@ -128,7 +128,7 @@ func (c *Controller) GetPersonalVotes(ctx *gin.Context) {
 		return
 	}
 
-	// Only admin can view all votes
+	// Only admin can view others votes
 	email := session.Values["email"].(string)
 	result, err := v.GetVotesForVoter(email)
 	if err != nil {
@@ -166,7 +166,7 @@ func (c *Controller) GetVotesPerVoters(ctx *gin.Context) {
 		return
 	}
 
-	// Only admin can view all votes
+	// Only admin can view others votes
 	email := session.Values["email"]
 	if email != utils.GetAdminEmail() {
 		ctx.JSON(http.StatusForbidden, HTTPError{

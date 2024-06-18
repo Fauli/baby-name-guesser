@@ -123,8 +123,27 @@ func (c *Controller) GetVoter(ctx *gin.Context) {
 func (c *Controller) DeleteVoter(ctx *gin.Context) {
 	utils.Logger.Debug("DeleteVoter called")
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can delete voters
+	loggedInMail := session.Values["email"]
+	if loggedInMail != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	email := ctx.Param("email")
-	err := v.DeleteVoterByEmail(email)
+	err = v.DeleteVoterByEmail(email)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,

@@ -43,9 +43,28 @@ func (c *Controller) GetPayment(ctx *gin.Context) {
 //	@Router			/payments/{email}  [post]
 func (c *Controller) PayForVotes(ctx *gin.Context) {
 
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can set payment status
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
 	voter := ctx.Param("email")
 
-	err := voters.PayForVotes(voter)
+	err = voters.PayForVotes(voter)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, HTTPError{
 			Code:    http.StatusInternalServerError,
@@ -75,6 +94,25 @@ func (c *Controller) PayForVotes(ctx *gin.Context) {
 //	@Router			/payments/{email}  [get]
 func (c *Controller) HasUserPaid(ctx *gin.Context) {
 	utils.Logger.Debug("HasUserPaid called")
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can get payment status
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
 
 	voter := ctx.Param("email")
 
