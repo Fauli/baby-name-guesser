@@ -166,6 +166,7 @@ function submitVote() {
         <div class="important">
           <div v-if="voteStatus === 'success'" class="important-content green">
             <p>Voting successful!</p>
+            <p>You will be redirected in a few seconds...</p>
           </div>
           <div v-if="voteStatus === 'failure'" class="important-content red">
             <p>Voting has failed!</p>

@@ -81,7 +81,7 @@ function register() {
   </div>
   <div v-else>
     <h1>Register for the name game!</h1>
-    <p>You need the special password (Event password) in order to register, ask Franz or Kathrin for it :).</p>
+    <p>You need the <span style="font-weight: bold;">special password (Event password)</span> in order to register, ask Franz or Kathrin for it :).</p>
     <br />
     <br />
 
