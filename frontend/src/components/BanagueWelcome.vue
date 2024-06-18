@@ -16,7 +16,7 @@ const toggleVisibility = () => {
     <br />
     <section>
         <p>Welcome to our Baby Name Guessing Game!!! 👶</p>
-        <p>Für eine deutsche Version drücke den Knopf ganz unten</p>
+        <p>Für eine deutsche Version klicke den Knopf ganz unten</p>
     </section>
     <br />
     <section>
@@ -29,15 +29,14 @@ const toggleVisibility = () => {
     <section>
         <h2>How It Works</h2>
         <ul>
-            <li>We’ve shortlisted some beautiful names for our baby. Your challenge is to guess the one we’ve chosen as
+            <li>We’ve shortlisted some beautiful names for our baby. Your challenge is to guess the one we’ve chosen as the
                 <span style="font-weight: bold;">first name.</span>
             </li>
-            <li>Place your votes — each guess is CHF 10, and you can cast as many guesses as you like to increase your
+            <li>Place your votes — each guess costs CHF 10, and you can cast as many guesses as you like to increase your
                 chances of winning, but only once... so choose wisely!</li>
             <li>Every single Franken raised will go into a fund for our baby’s future, making each guess a gift to our
                 child.</li>
-            <li>Get it right, and you’re in for a treat — a delicious three-course meal 🍲 prepared by us! The date of
-                the meal will be arranged after her birth.</li>
+            <li>Guess correctly, and you’ll win a treat — a delicious three-course meal 🍲 prepared by us! The date of the meal will be arranged after her birth.</li>
         </ul>
     </section>
     <br />
@@ -46,7 +45,7 @@ const toggleVisibility = () => {
         <ul>
             <li>Make your choice carefully. Once your vote is cast and the payment is made through Twint, PayPal, or
                 Revolut, there's no changing it.</li>
-            <li>Once you have voted, you will be able to see the overall top 3 guessed names.</li>
+            <li>After voting, you will be able to see the overall top 3 guessed names.</li>
             <li>We already made the final decision on the name - so the game will not influence our choice 😁</li>
         </ul>
     </section>
