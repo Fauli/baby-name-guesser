@@ -128,7 +128,7 @@ function submitVote() {
           <td class="value">{{ paymentInfo.paypal }}</td>
         </tr>
         <tr>
-          <td class="label">IBAN of the little ones bank account</td>
+          <td class="label">IBAN</td>
           <td class="value">{{ paymentInfo.iban }}</td>
         </tr>        <tr>
           <td class="label">Important</td>
