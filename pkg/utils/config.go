@@ -75,7 +75,9 @@ func PrintAllConfig() {
 	fmt.Printf("EVENT_PASSWORD: %s\n", GetEventPassword())
 	fmt.Printf("TWINT: %s\n", GetMobile())
 	fmt.Printf("PAYPAL: %s\n", GetPaypal())
+	fmt.Printf("IBAN: %s\n", GetIBAN())
 	fmt.Printf("SESSION_KEY: %s\n", GetSessionKey())
 	fmt.Printf("BANAGUE_DEBUG: %t\n", IsDebug())
 	fmt.Printf("UI_PATH: %s\n", GetUIPath())
+	fmt.Printf("SERVER_AND_PORT: %s\n", GetServerAndPort())
 }
