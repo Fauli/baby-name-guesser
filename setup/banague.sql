@@ -66,7 +66,8 @@ CREATE TABLE public.voters (
     name character varying NOT NULL,
     last_name character varying NOT NULL,
     email character varying NOT NULL,
-    password character varying NOT NULL
+    password character varying NOT NULL,
+    created_at timestamp DEFAULT NOW()
 );
 
 
@@ -80,7 +81,8 @@ ALTER TABLE public.voters OWNER TO banague;
 CREATE TABLE public.votes (
     names_fk character varying NOT NULL,
     voter_fk character varying NOT NULL,
-    is_paid boolean DEFAULT false NOT NULL
+    is_paid boolean DEFAULT false NOT NULL,
+    created_at timestamp DEFAULT NOW()
 );
 
 
