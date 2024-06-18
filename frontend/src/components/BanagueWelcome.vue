@@ -43,7 +43,7 @@ const toggleVisibility = () => {
     <section>
         <h2>Important Rules</h2>
         <ul>
-            <li>Make your choice carefully. Once your vote is cast and the payment is made through Twint, PayPal, or
+            <li>Make your choice carefully. Once your vote is cast and the payment is made through Twint, PayPal, IBAN, or
                 Revolut, there's no changing it.</li>
             <li>After voting, you will be able to see the overall top 3 guessed names.</li>
             <li>We already made the final decision on the name - so the game will not influence our choice 😁</li>
@@ -85,7 +85,7 @@ const toggleVisibility = () => {
                     möchtest, um deine Gewinnchancen zu erhöhen, aber nur einmal... also wähle weise!</li>
                 <li>Jeder einzelne Franken, der gesammelt wird, fliesst in einen Fonds für die Zukunft unseres Babys,
                     sodass jeder Tipp ein Geschenk für unser Kind ist.</li>
-                <li>Errätst du richtig, erwartet dich eine Belohnung — ein exklusives Drei-Gang-Menü 🍲, das von uns
+                <li>Errätst du den Namen richtig, erwartet dich eine Belohnung — ein exklusives Drei-Gang-Menü 🍲, das von uns
                     zubereitet wird! Der Termin für das Essen wird nach der Geburt vereinbart.</li>
             </ul>
         </section>
@@ -94,11 +94,10 @@ const toggleVisibility = () => {
             <h2>Wichtige Regeln</h2>
             <ul>
                 <li>Treffe deine Wahl sorgfältig. Sobald deine Stimme abgegeben ist, gibt es kein Zurück mehr.</li>
-                <li>Bezahle deinen Einsatz via Twint, PayPal oder Revolut gemäss Angaben auf der Webseite, damit deine
+                <li>Bezahle deinen Einsatz via Twint, PayPal, IBAN oder Revolut gemäss Angaben auf der Webseite, damit deine
                     Wahl auch vollständig gültig wird.</li>
                 <li>Nachdem du abgestimmt hast, kannst du die drei am häufigsten gewählten Namen ansehen.</li>
-                <li>Wir haben unsere Entscheidung bereits getroffen - das Spiel wird unsere Namenswahl also nicht
-                    beeinflussen😁</li>
+                <li>Unsere Entscheidung ist bereits gefallen - das Spiel wird unsere Namenswahl also nicht beeinflussen 😁</li>
             </ul>
         </section>
         <br />
