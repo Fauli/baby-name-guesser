@@ -74,6 +74,31 @@ func DeleteVoterByEmail(email string) error {
 	return err
 }
 
+func GetAllVoters() ([]Voter, error) {
+	c, err := postgres.NewPostgresClient()
+	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to create postgres client: %v", err)
+		return nil, err
+	}
+	defer c.Close()
+	voterRows, err := c.GetAllVoters()
+	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to get voters: %v", err)
+		return nil, err
+	}
+
+	// TODO: [franz] this is a bit ugly, fix it please
+	voters := make([]Voter, len(voterRows))
+	for i, voterRow := range voterRows {
+		voters[i] = Voter{
+			Name:     voterRow.Name,
+			LastName: voterRow.LastName,
+			Email:    voterRow.Email,
+		}
+	}
+	return voters, nil
+}
+
 func GetVoterByEmail(email string) (Voter, error) {
 	c, err := postgres.NewPostgresClient()
 	if err != nil {

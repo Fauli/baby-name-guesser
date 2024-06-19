@@ -79,6 +79,51 @@ func (c *Controller) AddNewVoter(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// GetAllVoters godoc
+//
+//	@Summary		Get all voters
+//	@Description	Get all voters
+//	@Tags			voter
+//	@Accept			json
+//	@Produce		json
+//	@Success		200					{object}	[]v.Voter
+//	@Failure		400					{object}	HTTPError
+//	@Failure		404					{object}	HTTPError
+//	@Failure		500					{object}	HTTPError
+//	@Router			/voters [get]
+func (c *Controller) GetAllVoters(ctx *gin.Context) {
+	utils.Logger.Debug("GetAllVoters called")
+
+	session, err := c.Store.Get(ctx.Request, "session")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	// Only admin can get all voters
+	email := session.Values["email"]
+	if email != utils.GetAdminEmail() {
+		ctx.JSON(http.StatusForbidden, HTTPError{
+			Code:    http.StatusForbidden,
+			Message: "You are not authorized to view this resource",
+		})
+		return
+	}
+
+	voters, err := v.GetAllVoters()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, voters)
+}
+
 // GetVoter godoc
 //
 //	@Summary		Get a single voter by email

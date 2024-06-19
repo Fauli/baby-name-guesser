@@ -302,6 +302,34 @@ paths:
       tags:
       - payments
   /voters:
+    get:
+      consumes:
+      - application/json
+      description: Get all voters
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/voters.Voter'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get all voters
+      tags:
+      - voter
     post:
       consumes:
       - application/json

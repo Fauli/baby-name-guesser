@@ -69,6 +69,7 @@ func main() {
 	nameGroup.DELETE("/:name", c.DeleteBabyName)
 
 	votersGroup.POST("", c.AddNewVoter)
+	votersGroup.GET("", c.GetAllVoters)
 	votersGroup.POST("/login", c.LoginVoter)
 	votersGroup.GET("/:email", c.GetVoter)
 	votersGroup.DELETE("/:email", c.DeleteVoter)

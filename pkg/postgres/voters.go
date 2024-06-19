@@ -6,6 +6,12 @@ import (
 	"sbebe.ch/baby-name-guesser/pkg/utils"
 )
 
+type VoterRow struct {
+	Name     string `json:"name"`
+	LastName string `json:"last_name"`
+	Email    string `json:"email"`
+}
+
 // Add Voter inserts a single voter entry into the voters table
 func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error {
 	utils.Logger.Sugar().Infof("Adding voter to DB: %v\n", email)
@@ -17,6 +23,30 @@ func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error 
 	}
 
 	return nil
+}
+
+// GetAllVoters returns all voters from the voters table
+func (c *PostgresClient) GetAllVoters() ([]VoterRow, error) {
+	utils.Logger.Sugar().Info("Getting all voters from DB")
+	rows, err := c.db.Query("SELECT name, last_name, email FROM voters")
+	if err != nil {
+		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
+		return nil, fmt.Errorf("failed to execute query: %v", err)
+	}
+	defer rows.Close()
+
+	var voters []VoterRow
+	for rows.Next() {
+		var voter VoterRow
+		err := rows.Scan(&voter.Name, &voter.LastName, &voter.Email)
+		if err != nil {
+			utils.Logger.Sugar().Errorf("failed to scan row: %v", err)
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		voters = append(voters, voter)
+	}
+
+	return voters, nil
 }
 
 // DeleteVoter deletes a single voter entry from the voters table
