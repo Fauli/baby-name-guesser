@@ -47,6 +47,7 @@ const toggleVisibility = () => {
                 Revolut, there's no changing it.</li>
             <li>After voting, you will be able to see the overall top 3 guessed names.</li>
             <li>We already made the final decision on the name - so the game will not influence our choice 😁</li>
+            <li>You can join the guessing game until the 19.08.2024</li>
         </ul>
     </section>
     <br />
@@ -98,6 +99,7 @@ const toggleVisibility = () => {
                     Wahl auch vollständig gültig wird.</li>
                 <li>Nachdem du abgestimmt hast, kannst du die drei am häufigsten gewählten Namen ansehen.</li>
                 <li>Unsere Entscheidung ist bereits gefallen - das Spiel wird unsere Namenswahl also nicht beeinflussen 😁</li>
+                <li>Du hast bis zum 19.08.2024 Zeit deine Wetten abzugeben</li>
             </ul>
         </section>
         <br />
