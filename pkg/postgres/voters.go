@@ -31,7 +31,7 @@ func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error 
 func (c *PostgresClient) GetAllVoters() ([]VoterRow, error) {
 	utils.Logger.Sugar().Info("Getting all voters from DB")
 	// Select name, last_name, email from voters, joins votes to see if the voter has voted and paid
-	rows, err := c.db.Query("SELECT v.name, v.last_name, v.email, COALESCE(vt.is_paid, false) AS is_paid, (vt.voter_fk IS NOT NULL) AS has_voted FROM public.voters v LEFT JOIN public.votes vt ON v.email = vt.voter_fk GROUP BY v.name, v.last_name, v.email, vt.is_paid, vt.voter_fk;")
+	rows, err := c.db.Query("SELECT v.name, v.last_name, v.email, COALESCE(vt.is_paid, false) AS has_paid, (vt.voter_fk IS NOT NULL) AS has_voted FROM public.voters v LEFT JOIN public.votes vt ON v.email = vt.voter_fk GROUP BY v.name, v.last_name, v.email, vt.is_paid, vt.voter_fk")
 	if err != nil {
 		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return nil, fmt.Errorf("failed to execute query: %v", err)
