@@ -130,7 +130,8 @@ const totalCollectedMoney = computed(() => {
           <tr v-for="votedName in votedNames">
             <td>{{ votedName.email }}</td>
             <td v-if="votedName.names">
-              <span v-for="name in votedName.names">{{ name }}, </span>
+              <!-- <span v-for="name in votedName.names ">{{ name }}, </span> -->
+              <span>{{ votedName.names.join(", ") }}</span>
             </td>
           </tr>
         </tbody>
