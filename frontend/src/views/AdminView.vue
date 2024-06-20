@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 
 const API_URL = `/api`;
 
 const voters: any = ref('');
+const votes: any = ref('');
 const votedNames: any = ref<string[]>([]);
 const sortKey = ref('');
 const sortOrder = ref(1); // 1 for ascending, -1 for descending
@@ -16,6 +17,11 @@ watchEffect(async () => {
 watchEffect(async () => {
   const url = `${API_URL}/votes/voters`;
   votedNames.value = await (await fetch(url)).json();
+});
+
+watchEffect(async () => {
+  const url = `${API_URL}/votes`;
+  votes.value = await (await fetch(url)).json();
 });
 
 function userPaid(email: string) {
@@ -57,6 +63,12 @@ function sortBy(key: string) {
     return 0;
   });
 }
+
+const sortedVotes = computed(() => {
+  return Object.entries(votes.value)
+    .sort(([, aVotes], [, bVotes]) => (bVotes as number) - (aVotes as number))
+    .map(([name, voteCount]) => ({ name, voteCount }));
+});
 </script>
 
 <template>
@@ -116,6 +128,26 @@ function sortBy(key: string) {
             <td v-if="votedName.names">
               <span v-for="name in votedName.names">{{ name }}, </span>
             </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <br /><br />
+
+    <h2>Votes</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="vote in sortedVotes" :key="vote.name">
+            <td>{{ vote.name }}</td>
+            <td>{{ vote.voteCount }}</td>
           </tr>
         </tbody>
       </table>
