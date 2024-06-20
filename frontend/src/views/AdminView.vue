@@ -69,6 +69,10 @@ const sortedVotes = computed(() => {
     .sort(([, aVotes], [, bVotes]) => (bVotes as number) - (aVotes as number))
     .map(([name, voteCount]) => ({ name, voteCount }));
 });
+
+const totalCollectedMoney = computed(() => {
+  return Object.values(votes.value).reduce((acc, voteCount) => acc as number + (voteCount as number) * 10, 0);
+});
 </script>
 
 <template>
@@ -153,6 +157,13 @@ const sortedVotes = computed(() => {
       </table>
     </div>
   </div>
+
+  <br /><br />
+
+  <!-- can be calculated by summing up all value os votes and multiply by 10-->
+  <h2>Collected money</h2>
+  <p>{{ totalCollectedMoney }} CHF</p>
+
 </template>
 
 <style>
