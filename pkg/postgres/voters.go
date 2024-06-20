@@ -10,6 +10,8 @@ type VoterRow struct {
 	Name     string `json:"name"`
 	LastName string `json:"last_name"`
 	Email    string `json:"email"`
+	HasVoted bool   `json:"has_voted"`
+	HasPaid  bool   `json:"has_paid"`
 }
 
 // Add Voter inserts a single voter entry into the voters table
@@ -25,10 +27,11 @@ func (c *PostgresClient) AddVoter(name, lastName, email, passwort string) error 
 	return nil
 }
 
-// GetAllVoters returns all voters from the voters table
+// GetAllVoters returns all voters from the voters table, joins the votes table to check if the voter has voted
 func (c *PostgresClient) GetAllVoters() ([]VoterRow, error) {
 	utils.Logger.Sugar().Info("Getting all voters from DB")
-	rows, err := c.db.Query("SELECT name, last_name, email FROM voters")
+	// Select name, last_name, email from voters, joins votes to see if the voter has voted and paid
+	rows, err := c.db.Query("SELECT v.name, v.last_name, v.email, COALESCE(vt.is_paid, false) AS is_paid, (vt.voter_fk IS NOT NULL) AS has_voted FROM public.voters v LEFT JOIN public.votes vt ON v.email = vt.voter_fk GROUP BY v.name, v.last_name, v.email, vt.is_paid, vt.voter_fk;")
 	if err != nil {
 		utils.Logger.Sugar().Errorf("failed to execute query: %v", err)
 		return nil, fmt.Errorf("failed to execute query: %v", err)
@@ -38,7 +41,7 @@ func (c *PostgresClient) GetAllVoters() ([]VoterRow, error) {
 	var voters []VoterRow
 	for rows.Next() {
 		var voter VoterRow
-		err := rows.Scan(&voter.Name, &voter.LastName, &voter.Email)
+		err := rows.Scan(&voter.Name, &voter.LastName, &voter.Email, &voter.HasPaid, &voter.HasVoted)
 		if err != nil {
 			utils.Logger.Sugar().Errorf("failed to scan row: %v", err)
 			return nil, fmt.Errorf("failed to scan row: %v", err)
