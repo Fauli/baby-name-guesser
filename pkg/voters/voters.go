@@ -94,6 +94,8 @@ func GetAllVoters() ([]Voter, error) {
 			Name:     voterRow.Name,
 			LastName: voterRow.LastName,
 			Email:    voterRow.Email,
+			HasVoted: voterRow.HasVoted,
+			HasPaid:  voterRow.HasPaid,
 		}
 	}
 	return voters, nil
